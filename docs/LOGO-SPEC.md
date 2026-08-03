@@ -6,9 +6,9 @@ Status: typography and color tokens recorded. Final yellow play geometry remains
 
 - Text: `videyo`
 - Font family: `Helvetica Neue`, fallback `Helvetica`, `Arial`, sans-serif
-- Weight: `720` in CSS, rendered as approximately `750` in SVG
+- Weight: `720` in the wordmark CSS and `800` for the original Yo mark treatment
 - Letter spacing: `-0.05em` in CSS; approximately `-18px` at the 280px SVG reference size
-- The `yo` letters must use the exact same font family, weight, size, and letter spacing as `vide`.
+- The `yo` letters use Videyo's original Helvetica Neue treatment. The yellow shape changes, not the type treatment.
 - The yellow play shape is resized around the fixed `yo` word. Do not shrink or substitute the typography.
 - `yo` must be fully contained and vertically centered inside the yellow shape.
 

@@ -78,6 +78,8 @@ Relationship lines remain visible and attached to their nodes throughout the gra
 
 Yo is visually tethered to the selected graph node. The same yellow Yo play mark identifies both the companion and the Videyo logo. The page uses generous space between creative beats and removes panels that repeat knowledge already visible in the graph.
 
+The Yo play mark is one yellow right-facing triangle with the letters `yo` inside it. The `y` sits on the tall left side and the `o` follows before the triangle narrows. It is never a badge plus an arrow or a button with a separate play icon.
+
 ## Cohesion correction
 
 Erin's direction: keep "yo, what happens next?" on one line, condense the opening, place the knowledge graph above the fold, move the sample story below it, and replace redundant project labeling with a clear statement that Videyo is the friend who helps bring videos to life and notices connections behind the scenes.

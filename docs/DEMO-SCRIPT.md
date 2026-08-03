@@ -1,33 +1,45 @@
-# Three-minute demo script
+# Videyo demo script
 
-Status: draft only. Record and publish only after Erin approves the app.
+Target length: 2 minutes 30 seconds.
 
-## 0:00 to 0:25
+## 0:00 to 0:18
 
-"Generative media work creates a trail of prompts, versions, and downloaded files. Videyo turns that trail into one visible production record."
+"Meet Yo, your creative friend for video. Show Yo what you see, and it connects the dots across your whole story."
 
-Show the empty workspace and enter a general visual brief.
+Show the Videyo logo, headline, and full knowledge graph.
 
-## 0:25 to 1:05
+## 0:18 to 0:48
 
-Run demonstration mode. Point out the visible pipeline state while the preview appears.
+"Start with the story graph. Each circle holds a character, place, idea, or scene. The lines show how often they meet. Point to any circle and Yo sees exactly what you are seeing."
 
-"This public mode makes no paid model call. It exercises the same run and provenance structure with deterministic preview media."
+Select Mira, Echo, and the mirror choice. Show the tethered Yo thread changing with the selection.
 
-## 1:05 to 1:50
+## 0:48 to 1:10
 
-Show the result record: run ID, provider, model, asset SHA-256, canonical manifest hash, verification status, and storage label.
+"Yo keeps the connections in mind while you create. Unwind the graph into story order and every relationship stays visible. You can see what happens next without losing why it matters."
 
-"The useful unit is the asset plus the evidence of how it was made. Genblaze creates the run and verifies the manifest."
+Click "Unwind into story," pause on the ordered graph, then return to knowledge view.
 
-## 1:50 to 2:35
+## 1:10 to 1:36
 
-Switch to an approved live run or show a previously completed live record.
+"The first quest is the character sheet. Mira has a goal, a fear, and a change. Those choices give later scenes something to build from."
 
-"In live mode, Genblaze calls the configured media provider. Its Backblaze storage sink moves the output and provenance manifest into B2 as part of the run. The endpoint never calls B2 directly."
+Scroll to Mira's character sheet, then continue to the selected scene.
 
-Show the B2 asset and manifest location without exposing credentials.
+## 1:36 to 2:04
 
-## 2:35 to 3:00
+"Choose one scene and regenerate only that part. Demonstration mode creates a deterministic preview, then Genblaze builds and verifies the production record."
 
-"This slice starts with images. The same production record extends to image-to-video, narration, review decisions, and continuity. Videyo gives creators a place to make the work and trust its history."
+Click "Regenerate this scene." Show the new preview and the production record.
+
+## 2:04 to 2:24
+
+"A live run uses Genblaze with the OpenAI image provider. Genblaze sends the asset and canonical provenance manifest to private Backblaze B2 storage. Review access uses a signed URL that expires after one hour."
+
+Show a simple architecture frame: Videyo to Genblaze to private B2, with the asset and manifest together.
+
+## 2:24 to 2:30
+
+"Show Yo what you are seeing. Your video friend connects the dots and helps you bring the next scene to life."
+
+End on the Videyo logo and `videyo.erinmagennis.com`.
