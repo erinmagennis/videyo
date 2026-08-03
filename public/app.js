@@ -10,6 +10,7 @@ const toast = document.querySelector("#toast");
 let selectedNode = "mira";
 let graphMode = "graph";
 let liveMode = false;
+let graphAnimationFrame = null;
 
 const nodeNotes = {
   mira: "Mira maps what exists. Echo maps what might. They share six scenes, but only disagree in one.",
@@ -32,19 +33,25 @@ function positionGraph() {
 }
 
 function followMovingNodes(duration) {
+  if (graphAnimationFrame !== null) window.cancelAnimationFrame(graphAnimationFrame);
   const startedAt = performance.now();
   function drawFrame(now) {
     updateLines();
-    if (now - startedAt < duration) window.requestAnimationFrame(drawFrame);
+    if (now - startedAt < duration) {
+      graphAnimationFrame = window.requestAnimationFrame(drawFrame);
+    } else {
+      graphAnimationFrame = null;
+      updateLines();
+    }
   }
-  window.requestAnimationFrame(drawFrame);
+  graphAnimationFrame = window.requestAnimationFrame(drawFrame);
 }
 
 function updateLines() {
   const canvasBox = graphCanvas.getBoundingClientRect();
   graphLines.forEach((line) => {
-    const from = document.querySelector(`[data-id="${line.dataset.from}"]`).getBoundingClientRect();
-    const to = document.querySelector(`[data-id="${line.dataset.to}"]`).getBoundingClientRect();
+    const from = document.querySelector(`[data-id="${line.dataset.from}"] .node-orb`).getBoundingClientRect();
+    const to = document.querySelector(`[data-id="${line.dataset.to}"] .node-orb`).getBoundingClientRect();
     line.setAttribute("x1", from.left + from.width / 2 - canvasBox.left);
     line.setAttribute("y1", from.top + from.height / 2 - canvasBox.top);
     line.setAttribute("x2", to.left + to.width / 2 - canvasBox.left);

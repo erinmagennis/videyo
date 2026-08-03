@@ -66,9 +66,9 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .graph-lines line[data-weight="2"] { stroke-width: 4; opacity: 0.48; }
 .graph-lines line[data-weight="3"] { stroke-width: 7; opacity: 0.65; }
 .graph-lines line[data-weight="4"] { stroke: var(--mint); stroke-width: 10; opacity: 0.78; }
-.story-thread { fill: none; stroke: var(--mint); stroke-width: 7; stroke-linecap: round; opacity: 0; transition: opacity 500ms var(--ease) 300ms; }
+.story-thread { fill: none; stroke: var(--mint); stroke-width: 7; stroke-linecap: round; opacity: 0; transition: opacity 250ms var(--ease); }
 .story-mode .graph-lines line { opacity: 0.42; }
-.story-mode .story-thread { opacity: 0.8; }
+.story-mode .story-thread { opacity: 0.8; transition-delay: 300ms; }
 .graph-node { position: absolute; left: 0; top: 0; border: 0; background: transparent; color: var(--text); display: grid; justify-items: center; gap: 0.25rem; cursor: pointer; transform: translate(-50%, -50%); transition: left 850ms var(--ease), top 850ms var(--ease), transform var(--fast); z-index: 2; }
 .graph-node:hover { transform: translate(-50%, -50%) scale(1.07); }
 .graph-node .node-orb { width: 58px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: #344039; border: 2px solid #6d7a73; color: var(--text); font-weight: 760; box-shadow: 0 10px 30px rgb(0 0 0 / 0.24); transition: box-shadow var(--fast), border-color var(--fast), background var(--fast); }
