@@ -307,6 +307,14 @@ document.querySelector("#mode-button").addEventListener("click", (event) => {
 document.querySelector("#generate-button").addEventListener("click", generateScene);
 document.querySelector("#keep-button").addEventListener("click", () => showToast("Current version kept. The next scene is ready when you are."));
 document.querySelector(".character-action").addEventListener("click", () => selectNode("mira"));
+document.querySelectorAll(".unlock-gem").forEach((gem) => gem.addEventListener("click", () => {
+  const unlocked = gem.classList.toggle("unlocked");
+  gem.setAttribute("aria-pressed", String(unlocked));
+  const status = gem.querySelector("em");
+  status.textContent = unlocked ? "UNLOCKED" : "ADD THOUGHT";
+  showToast(unlocked ? `${gem.querySelector("strong").textContent} added to your collection.` : "Quest returned to the clarity map.");
+  persistProject();
+}));
 window.addEventListener("resize", () => { updateLines(); moveYo(selectedNode); });
 
 positionGraph();

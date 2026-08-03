@@ -94,9 +94,10 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .graph-node.active .node-orb { width: 30px; box-shadow: 0 0 0 7px rgb(214 255 85 / 0.14), 0 10px 28px rgb(0 0 0 / 0.3); border-color: var(--lime); }
 .yo-floater { position: absolute; width: min(270px, calc(100% - 2rem)); left: 0; top: 0; z-index: 3; border-radius: 20px; background: var(--paper); color: var(--ink); padding: 0.8rem; box-shadow: 0 20px 45px rgb(0 0 0 / 0.35); transition: left 420ms var(--ease), top 420ms var(--ease), transform 360ms var(--ease); }
 .yo-floater.context-change { transform: scale(1.035); }
-.story-timeline { display: none; position: absolute; inset: 1.25rem; z-index: 4; overflow: auto; padding: 0.2rem 0 1rem; }
-.timeline-mode .graph-node, .timeline-mode .graph-lines { opacity: 0; pointer-events: none; }
+.story-timeline { display: none; position: absolute; left: 1.25rem; right: 1.25rem; bottom: 1.25rem; height: 180px; z-index: 4; overflow: auto; padding: 0.8rem 0 1rem; border-top: 1px solid rgb(247 244 237 / 0.16); background: linear-gradient(180deg, rgb(16 19 17 / 0.16), #101311 28%); }
 .timeline-mode .story-timeline { display: block; }
+.timeline-mode .graph-node { transform: translate(-50%, -50%) scale(0.82); }
+.timeline-mode .graph-canvas::after { content: "KNOWLEDGE GRAPH + STORY SPINE"; }
 .timeline-overview { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgb(247 244 237 / 0.16); }
 .timeline-overview span, .timeline-kicker { color: var(--muted); font-size: 0.62rem; letter-spacing: 0.14em; }
 .timeline-overview strong { display: block; margin-top: 0.3rem; font: 500 1.6rem Georgia, serif; }
@@ -110,6 +111,15 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .timeline-scene:hover, .timeline-scene.active { border-color: var(--lime); background: rgb(214 255 85 / 0.12); }
 .timeline-scene span { display: block; color: var(--muted); font-size: 0.62rem; }
 .timeline-scene strong { display: block; margin-top: 0.3rem; font-size: 0.78rem; }
+.quest-gem-shelf { grid-column: 2 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.65rem; }
+.unlock-gem { min-height: 82px; display: grid; grid-template-columns: 34px 1fr; grid-template-rows: 1fr auto; align-items: center; gap: 0 0.65rem; padding: 0.7rem; border: 1px solid rgb(247 244 237 / 0.13); border-radius: 16px; background: #151a17; color: var(--muted); text-align: left; cursor: pointer; }
+.unlock-gem .gem-icon { grid-row: 1 / -1; width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; border: 1px solid #536059; color: #65716b; font-size: 1.1rem; }
+.unlock-gem small { display: block; font-size: 0.58rem; letter-spacing: 0.1em; }
+.unlock-gem strong { display: block; margin-top: 0.25rem; color: var(--text); font-size: 0.78rem; }
+.unlock-gem em { grid-column: 2; font-style: normal; font-size: 0.58rem; letter-spacing: 0.08em; }
+.unlock-gem.unlocked { border-color: var(--lime); background: rgb(214 255 85 / 0.09); color: var(--lime); }
+.unlock-gem.unlocked .gem-icon { background: var(--sun); border-color: var(--sun); color: var(--ink); box-shadow: 0 0 0 5px rgb(243 215 95 / 0.12); }
+.unlock-gem.unlocked em { color: var(--lime); }
 .yo-floater-head { display: flex; align-items: center; gap: 0.65rem; }
 .yo-floater-head p { margin: 0; font-weight: 750; }
 .yo-thread { max-height: 126px; overflow: auto; margin: 0.75rem 0; padding-right: 0.25rem; }
@@ -211,6 +221,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .quest-number { grid-column: 1 / -1; }
   .character-sheet { grid-template-columns: 110px 1fr; }
   .character-portrait { width: 105px; }
+  .quest-gem-shelf { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 560px) {
@@ -223,6 +234,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .quest.active { width: 86px; }
   .quest small { display: none; }
   .yo-signal { left: 62%; top: 18%; width: 44px; }
+  .quest-gem-shelf { grid-template-columns: 1fr; }
   .stage-media { min-height: 310px; }
   .stage-actions { align-items: stretch; flex-direction: column; }
   .primary-action, .quiet-action { width: 100%; }
