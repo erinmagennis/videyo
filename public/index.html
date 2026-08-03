@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Videyo is a creative quest map for traceable generative media." />
+    <title>Videyo</title>
+    <link rel="stylesheet" href="/public/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="wordmark" href="#studio" aria-label="Videyo home">videyo</a>
+        <div class="project-identity">
+          <span class="project-kicker">PROJECT WORLD</span>
+          <strong>The Glass Ocean</strong>
+        </div>
+        <button class="mode-button" id="mode-button" type="button" aria-pressed="false">
+          Demonstration mode
+        </button>
+      </header>
+
+      <main id="studio">
+        <section class="intro" aria-labelledby="page-title">
+          <p class="eyebrow">CREATIVE QUEST 03</p>
+          <h1 id="page-title">Where are we going next?</h1>
+          <p class="intro-copy">Point to a beat. Yo will bring the right ideas with you.</p>
+        </section>
+
+        <section class="world-map" aria-label="Project journey">
+          <svg class="journey-line" viewBox="0 0 1200 330" role="presentation" aria-hidden="true">
+            <path class="journey-track" d="M55 230 C235 70 390 300 570 165 C735 42 890 225 1140 70" />
+            <path class="journey-progress" d="M55 230 C235 70 390 300 570 165" />
+          </svg>
+
+          <button class="quest quest-one complete" data-node="signal" style="--x: 4%; --y: 62%" type="button">
+            <span>01</span><strong>Signal</strong><small>Complete</small>
+          </button>
+          <button class="quest quest-two complete" data-node="arrival" style="--x: 25%; --y: 40%" type="button">
+            <span>02</span><strong>Arrival</strong><small>Complete</small>
+          </button>
+          <button class="quest quest-three active" data-node="turn" style="--x: 47%; --y: 31%" type="button" aria-current="step">
+            <span>03</span><strong>The turn</strong><small>In progress</small>
+          </button>
+          <button class="quest quest-four" data-node="reveal" style="--x: 72%; --y: 38%" type="button">
+            <span>04</span><strong>Reveal</strong><small>Waiting</small>
+          </button>
+          <button class="quest quest-five" data-node="return" style="--x: 91%; --y: 7%" type="button">
+            <span>05</span><strong>Return</strong><small>Waiting</small>
+          </button>
+
+          <div class="yo-signal" aria-hidden="true">yo</div>
+        </section>
+
+        <section class="workspace" aria-label="Selected quest workspace">
+          <div class="scene-stage">
+            <div class="stage-toolbar">
+              <span id="selected-label">THE TURN · SCENE 06</span>
+              <span id="stage-status">READY FOR A NEW VERSION</span>
+            </div>
+            <div class="stage-media" id="stage-media">
+              <div class="stage-sun"></div>
+              <div class="stage-land stage-land-one"></div>
+              <div class="stage-land stage-land-two"></div>
+              <p id="stage-prompt">A glass horizon bends as the traveler chooses a new path.</p>
+            </div>
+            <div class="stage-actions">
+              <button class="primary-action" id="generate-button" type="button">Regenerate this quest</button>
+              <button class="quiet-action" id="keep-button" type="button">Keep current version</button>
+            </div>
+          </div>
+
+          <aside class="companion" aria-labelledby="yo-title">
+            <div class="yo-heading">
+              <span class="yo-avatar">yo</span>
+              <div><p id="yo-title">Pointed at: The turn</p><span>Creative companion</span></div>
+            </div>
+            <p class="yo-message" id="yo-message">This beat changes the direction of the whole piece. The unused mirror idea from Arrival could make the choice feel inevitable.</p>
+
+            <div class="memory-thread" aria-label="Connected project knowledge">
+              <p>CONNECTED MEMORY</p>
+              <button type="button" data-memory="mirror">Mirror motif <span>Scene 02</span></button>
+              <button type="button" data-memory="sound">Glass tone <span>Audio idea</span></button>
+              <button type="button" data-memory="choice">Choice without dialogue <span>Story note</span></button>
+            </div>
+
+            <form class="yo-form" id="yo-form">
+              <label for="yo-input">Talk to Yo about this quest</label>
+              <div class="yo-input-row">
+                <input id="yo-input" name="message" type="text" maxlength="180" placeholder="Yo, what about the mirror idea?" />
+                <button type="submit" aria-label="Ask Yo">Ask</button>
+              </div>
+            </form>
+          </aside>
+        </section>
+
+        <section class="production-record" aria-labelledby="record-title">
+          <div>
+            <p class="eyebrow" id="record-title">PRODUCTION RECORD</p>
+            <strong id="record-summary">No new run yet</strong>
+          </div>
+          <dl>
+            <div><dt>Provider</dt><dd id="record-provider">Demonstration</dd></div>
+            <div><dt>Asset hash</dt><dd id="record-asset">Pending</dd></div>
+            <div><dt>Manifest</dt><dd id="record-manifest">Pending</dd></div>
+            <div><dt>Storage</dt><dd id="record-storage">B2 on live runs</dd></div>
+          </dl>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/public/app.js"></script>
+  </body>
+</html>

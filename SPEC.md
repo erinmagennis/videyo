@@ -6,6 +6,54 @@
 **Working name:** Videyo  
 **Platform:** macOS, local-only v1
 
+## Hackathon extension, 2026-08-03
+
+Erin authorized a same-day entry for the Backblaze Generative Media Hackathon. The entry is a general Videyo platform, not an Arkhai-specific tool.
+
+The judged slice changes the deployment boundary without replacing the longer-term product:
+
+- judges receive a public web application;
+- Genblaze runs the generation and provenance workflow;
+- Backblaze B2 stores generated assets, thumbnails, manifests, and review metadata;
+- source media stays local unless a user explicitly uploads it;
+- the demo uses a generic sample project and no Arkhai material;
+- every generation exposes provider, model, status, asset hash, manifest hash, and B2 location;
+- the same workflow must have a credential-free demonstration mode and a clearly labeled live mode.
+
+### Yo companion and creative memory
+
+Erin's direction:
+
+> "its someone you can chat with and point towards what youre seeing"
+
+Videyo's creative companion, Yo, is grounded in a knowledge graph of the project's media, scenes, notes, prompts, people, places, themes, decisions, and unused ideas. A user can point Yo toward the current item and ask about it. Yo may also surface a relevant connection such as an earlier character note, an unused shot, a related prompt, or an idea that fits a later scene.
+
+The hackathon slice represents this graph as portable nodes and edges stored with the project record in B2. It does not add a graph database. The interaction and schema are the proof; dedicated graph infrastructure waits until real project scale or query failures justify it.
+
+### Approved interaction direction
+
+The primary interface is a playable story journey rather than a traditional editing timeline. Each story beat is a node connected to scenes, visual references, characters, prompts, decisions, and unused ideas. Selecting a beat points Yo toward that context. A targeted regeneration creates a new version for only that beat and preserves its parent run and provenance.
+
+The hackathon proof does not attempt nonlinear editing. It proves the new interaction model, one targeted generation path, visible knowledge connections, and traceable versions.
+
+Story beats behave as creative quests. A quest defines the current production challenge, evidence needed for completion, linked knowledge, generated output, and status. Completing a quest opens the next part of the project journey. Earlier quests remain revisitable, and targeted regeneration creates a child version rather than overwriting accepted work.
+
+### Hackathon Definition of Done
+
+- A judge can open a public URL and understand the product without setup.
+- A user can enter a media brief and run one complete, visible workflow.
+- The live path invokes Genblaze and stores its output plus provenance in B2.
+- The demonstration path exercises the same state model without claiming an external generation occurred.
+- Tests prove prompt validation, safe public responses, deterministic demo provenance, and failure behavior when live services are not configured.
+- The repository explains local setup, Genblaze use, B2 use, provider and model choices, architecture, and known limits.
+- A three-minute demo script and Devpost submission draft are ready for Erin's approval.
+
+### What would make the hackathon plan wrong
+
+1. A public deployment cannot be made functional before the submission deadline.
+2. B2 or a model-provider account cannot be configured in time.
+3. The entry uses Genblaze only as decoration instead of executing the pipeline and provenance path.
+
 ## Intent in Erin's words
 
 > It should have everything I should look at in one spot, folder, or easy-to-read Markdown file.
@@ -74,7 +122,7 @@ Every observation and decision is stored locally at the originating project or c
 2. this client or brand;
 3. this series or content type;
 4. global;
-5. historical only—preserve but do not reuse.
+5. historical only, preserve but do not reuse.
 
 Nothing silently becomes global. Rule precedence is:
 

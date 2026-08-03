@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <rect width="1440" height="900" fill="#111412"/>
+  <circle cx="920" cy="355" r="275" fill="none" stroke="#2b342f" stroke-width="1"/>
+  <circle cx="920" cy="355" r="214" fill="#d8ff64" opacity="0.06"/>
+  <rect x="663" y="160" width="514" height="390" rx="34" fill="#e9e6df"/>
+  <path d="M663 443 C780 353 880 514 1005 397 C1060 347 1111 339 1177 314 V550 H663Z" fill="#27372e"/>
+  <circle cx="1033" cy="274" r="74" fill="#ef784b"/>
+  <text x="55" y="72" fill="#f5f3ec" font-family="Helvetica Neue, Arial" font-size="31" font-weight="650">videyo</text>
+  <text x="55" y="116" fill="#89958e" font-family="Helvetica Neue, Arial" font-size="15">WORLD 04 · FIRST LIGHT</text>
+  <text x="55" y="245" fill="#f5f3ec" font-family="Georgia, serif" font-size="58">Build the world.</text>
+  <text x="55" y="314" fill="#f5f3ec" font-family="Georgia, serif" font-size="58">I’ll keep the thread.</text>
+  <text x="55" y="370" fill="#9ca69f" font-family="Helvetica Neue, Arial" font-size="19">Story, shots, sound, versions, proof.</text>
+  <circle cx="1188" cy="172" r="34" fill="#d8ff64"/>
+  <text x="1172" y="181" fill="#111412" font-family="Helvetica Neue, Arial" font-size="22" font-weight="700">yo</text>
+  <path d="M1208 197 C1250 240 1252 303 1207 342" fill="none" stroke="#d8ff64" stroke-width="3" stroke-dasharray="4 10"/>
+  <rect x="1031" y="581" width="270" height="64" rx="32" fill="#d8ff64"/>
+  <text x="1061" y="620" fill="#111412" font-family="Helvetica Neue, Arial" font-size="18" font-weight="650">Yo, shape the opening</text>
+  <text x="55" y="635" fill="#f5f3ec" font-family="Helvetica Neue, Arial" font-size="16">SCENE 01</text>
+  <text x="55" y="676" fill="#9ca69f" font-family="Helvetica Neue, Arial" font-size="16">A quiet planet learns to speak.</text>
+  <rect x="55" y="730" width="1330" height="116" rx="20" fill="#191e1b"/>
+  <rect x="82" y="758" width="244" height="61" rx="11" fill="#ef784b"/>
+  <rect x="337" y="758" width="180" height="61" rx="11" fill="#465d50"/>
+  <rect x="528" y="758" width="300" height="61" rx="11" fill="#e9e6df"/>
+  <rect x="839" y="758" width="152" height="61" rx="11" fill="#63786a"/>
+  <rect x="1002" y="758" width="350" height="61" rx="11" fill="#2a322e"/>
+  <line x1="477" y1="717" x2="477" y2="842" stroke="#d8ff64" stroke-width="2"/>
+  <text x="1298" y="72" fill="#89958e" font-family="Helvetica Neue, Arial" font-size="15">PROOF ✓</text>
+</svg>

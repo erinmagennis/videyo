@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <rect width="1440" height="900" fill="#121313"/>
+  <text x="58" y="72" fill="#f6f2e8" font-family="Helvetica Neue, Arial" font-size="31" font-weight="650">videyo</text>
+  <text x="58" y="137" fill="#f6f2e8" font-family="Georgia, serif" font-size="47">Make something worth watching.</text>
+  <text x="58" y="179" fill="#949b97" font-family="Helvetica Neue, Arial" font-size="18">I’ll help with the next move.</text>
+  <rect x="58" y="236" width="780" height="438" rx="36" fill="#eae5d9" transform="rotate(-1 448 455)"/>
+  <rect x="88" y="266" width="720" height="378" rx="24" fill="#202824"/>
+  <circle cx="642" cy="374" r="107" fill="#f08b58"/>
+  <path d="M88 563 C263 450 401 640 564 514 C665 436 738 492 808 424 V644 H88Z" fill="#6d8d7c"/>
+  <rect x="887" y="250" width="454" height="122" rx="28" fill="#f6f2e8"/>
+  <circle cx="930" cy="311" r="27" fill="#ffd84d"/>
+  <text x="914" y="319" fill="#171817" font-family="Helvetica Neue, Arial" font-size="19" font-weight="700">yo</text>
+  <text x="974" y="298" fill="#262925" font-family="Helvetica Neue, Arial" font-size="17" font-weight="650">This frame has the feeling.</text>
+  <text x="974" y="327" fill="#646b66" font-family="Helvetica Neue, Arial" font-size="15">Keep it. Let the next shot move.</text>
+  <rect x="922" y="413" width="364" height="88" rx="14" fill="#202421" transform="rotate(2 1104 457)"/>
+  <text x="946" y="447" fill="#8d9690" font-family="Helvetica Neue, Arial" font-size="13">SHOT 04 · MOTION</text>
+  <text x="946" y="477" fill="#f6f2e8" font-family="Helvetica Neue, Arial" font-size="16">Camera drifts past the glass horizon.</text>
+  <rect x="875" y="538" width="428" height="148" rx="18" fill="#efe7cf" transform="rotate(-2 1089 612)"/>
+  <text x="902" y="578" fill="#6b675b" font-family="Helvetica Neue, Arial" font-size="13">PRODUCTION RECORD</text>
+  <text x="902" y="615" fill="#222421" font-family="Helvetica Neue, Arial" font-size="17">OpenAI · gpt-image-1.5</text>
+  <text x="902" y="646" fill="#4f554f" font-family="Helvetica Neue, Arial" font-size="15">Asset + manifest verified in B2</text>
+  <rect x="58" y="739" width="1324" height="107" rx="22" fill="#1d201e"/>
+  <rect x="86" y="766" width="192" height="54" rx="12" fill="#ffd84d"/>
+  <rect x="289" y="766" width="256" height="54" rx="12" fill="#f08b58"/>
+  <rect x="556" y="766" width="198" height="54" rx="12" fill="#6d8d7c"/>
+  <rect x="765" y="766" width="420" height="54" rx="12" fill="#303632"/>
+  <line x1="522" y1="728" x2="522" y2="841" stroke="#ffd84d" stroke-width="2"/>
+  <text x="1230" y="798" fill="#949b97" font-family="Helvetica Neue, Arial" font-size="14">00:18 / 01:20</text>
+</svg>

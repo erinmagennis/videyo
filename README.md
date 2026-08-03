@@ -1,54 +1,62 @@
 # Videyo
 
-Status: kickoff gate complete for the first slice. **Videyo** is the confirmed working name.
+Videyo is a production control room for generative media. A creator enters a brief, runs a model through Genblaze, reviews the result, and receives a verified provenance record beside the asset. Backblaze B2 keeps the output and its history together.
 
-This project is Erin's personal AI-assisted media-production system. It must eventually support short marketing work, longer entertainment or character-led films, podcasts, talks, pitch videos, and social cutdowns. Erin may share it with others later, but v1 is optimized for her rather than generalized public use.
+This repository contains a focused entry for the 2026 Backblaze Generative Media Hackathon. The larger product specification remains in `SPEC.md`.
 
-- Interview source: `/Users/erinmagennis/foundation/interviews/2026-07-29-video-production-system-retrospective.md`
-- Research inputs: `resources/2026-07-29-inputs.md`
-- First production evidence: `/Users/erinmagennis/Projects/clients/Arkhai_everything/arkhai-launch-video/`
+## What works
 
-## Initial proof suite
+- Credential-free demonstration runs produce deterministic preview media and a verified Genblaze manifest.
+- Live runs use the Genblaze OpenAI provider to create an image.
+- Genblaze's `ObjectStorageSink` writes the live asset and manifest to Backblaze B2.
+- The response exposes the run ID, provider, model, asset SHA-256, manifest hash, verification result, and storage location.
+- Live generation fails closed unless every required credential and the explicit live-generation flag are present.
 
-1. Revise the Arkhai launch video using the new review, transition, prompt, and asset-management workflow.
-2. Generate a short narrative film that tests character, location, and visual continuity.
-3. Edit a one-hour podcast through transcript, suggested filler cuts, audio cleanup, captions, and short-clip discovery.
-4. Create a speaker reel from talks, screen or slide material, transcript analysis, music, and selected highlights.
+## Run locally
 
-The generated narrative-film target is one hour. Production must be staged through a short continuity proof and then approved sequences or acts; it is not submitted as one uncontrolled generation run.
+Requires Python 3.11 or newer.
 
-## First usable slice
+```bash
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/pytest -q
+vercel dev
+```
 
-Build the Arkhai review hub first. It brings the timeline, scene purpose and neighbors, source and generated assets, prompt gist and full prompt, planned transitions, music, voice, sound cues, agent critique, versions, approvals, and file locations into one place.
+Copy `.env.example` to `.env` and add credentials only if you want to test the live path. Never commit that file.
 
-## Local project intake
+## Live configuration
 
-Videyo is macOS-only and local-only in v1. Each project has an Import or Project Inbox surface for drag-and-drop, file selection, or a watched local folder. Originals remain immutable. The platform creates metadata, thumbnails, proxies, and reversible project references or managed copies.
+Create a Backblaze B2 bucket and a bucket-scoped application key. Configure these environment variable names in the deployment service:
 
-For external review, Videyo exports a GitHub-ready review package rather than hosting an account-based collaboration service. Source media is excluded by default.
+```text
+B2_KEY_ID
+B2_APP_KEY
+B2_BUCKET
+B2_REGION
+OPENAI_API_KEY
+VIDEYO_LIVE_GENERATION=true
+```
 
-## Production methodology
+The current live model is `gpt-image-1.5` at `1024x1024` with medium quality. One request produces one asset. The public demonstration mode does not call a paid provider or claim that it did.
 
-Videyo uses the same controlled production method across modes, with the details adapted to the model and content type:
+## Verify
 
-1. **Intake:** import immutable source material into the Project Inbox and capture the brief, audience, format, budget, references, and approval constraints.
-2. **Contract:** define the story or content structure, visual language, audio direction, recurring assets, model routing, and acceptance criteria before generation or editing.
-3. **Plan:** build the timeline and design each transition using a visible picture, motion, sound, or narrative anchor.
-4. **Proof:** test approved stills, the hardest motion or continuity problem, and temporary audio before producing at scale.
-5. **Produce:** generate or edit versioned candidates at the lowest resolution that answers the current question. Prompts are optimized for the selected model and retain their scene context.
-6. **Review:** judge each scene with its goal, neighboring scenes, prompt, assets, audiovisual timeline, and Videyo's independent critique visible together.
-7. **Finish:** perform deterministic trims, transitions, transcript edits, captions, brand treatment, audio mixing, and final quality control.
-8. **Export:** create the required masters and a GitHub-ready review package whose `OVERVIEW.md` contains the project goal, methodology, steps, software and models used, costs, decisions, status, and links to review videos.
-9. **Learn:** preserve all evidence locally, then use the handoff interview to decide whether each lesson remains video-specific or is promoted to client, content-type, or global guidance.
+```bash
+.venv/bin/pytest -q
+```
 
-The agent owns organization, analysis, repeatable operations, reversible drafts, logging, and recommendations. Erin owns taste, material creative choices, approvals, spend, and what ships.
+The focused test suite covers input validation, deterministic asset hashing, Genblaze manifest verification, and fail-closed live configuration.
 
-## Local learning policy
+## Architecture and submission
 
-All production evidence is saved locally and every learning is retained at least in its originating project or client workspace. At handoff, the system asks Erin whether each reusable learning belongs only to this video, to the client or brand, to a series or content type, or globally. It may also be marked historical-only. Nothing silently becomes a global rule.
+- `videyo/pipeline.py`: Genblaze demo and live pipelines
+- `api/pipeline.py`: public serverless endpoint
+- `public/`: judge-facing interface
+- `docs/ARCHITECTURE.md`: request, generation, storage, and provenance flow
+- `docs/DEVPOST-DRAFT.md`: submission copy awaiting owner approval
+- `docs/DEMO-SCRIPT.md`: three-minute demo outline
 
-Rule precedence is: global < content type or series < client or brand < project < shot-specific direction.
+## Current limits
 
-## Cost baseline
-
-The replacement benchmark is Erin's discounted Descript plan at approximately $35 per month. Local editing should not require a recurring service. Optional sync, hosted review, and model usage are separate and must remain visible, estimated, budgeted, and approval-gated.
+The hackathon slice generates images. The product specification also covers video, audio, timelines, review, and continuity, but those modes are outside today's tested surface. The live provider and B2 path remain unverified until deployment credentials are configured and one approved paid generation completes.

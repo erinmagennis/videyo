@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+  <rect width="1440" height="900" fill="#151719"/>
+  <text x="58" y="72" fill="#f4f1e8" font-family="Helvetica Neue, Arial" font-size="31" font-weight="650">videyo</text>
+  <text x="1242" y="72" fill="#9ca3a0" font-family="Helvetica Neue, Arial" font-size="15">THE GLASS OCEAN</text>
+  <text x="58" y="180" fill="#f4f1e8" font-family="Georgia, serif" font-size="54">Where are we going next?</text>
+  <text x="58" y="224" fill="#9ca3a0" font-family="Helvetica Neue, Arial" font-size="18">Your film is a world you can move through.</text>
+  <path d="M115 486 C288 315 478 605 673 404 C835 238 1048 492 1290 303" fill="none" stroke="#4b5651" stroke-width="10" stroke-linecap="round"/>
+  <path d="M115 486 C288 315 478 605 673 404" fill="none" stroke="#82e5d0" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="115" cy="486" r="54" fill="#f3d75f"/>
+  <circle cx="367" cy="432" r="72" fill="#e56b4c"/>
+  <circle cx="673" cy="404" r="90" fill="#82e5d0"/>
+  <circle cx="943" cy="390" r="62" fill="#2f3734" stroke="#75817b" stroke-width="2"/>
+  <circle cx="1290" cy="303" r="44" fill="#2f3734" stroke="#75817b" stroke-width="2"/>
+  <text x="91" y="491" fill="#17191a" font-family="Helvetica Neue, Arial" font-size="15" font-weight="700">OPEN</text>
+  <text x="329" y="438" fill="#17191a" font-family="Helvetica Neue, Arial" font-size="15" font-weight="700">ARRIVAL</text>
+  <text x="630" y="410" fill="#17191a" font-family="Helvetica Neue, Arial" font-size="15" font-weight="700">TURN</text>
+  <circle cx="720" cy="335" r="32" fill="#f4f1e8"/>
+  <text x="704" y="344" fill="#17191a" font-family="Helvetica Neue, Arial" font-size="21" font-weight="700">yo</text>
+  <rect x="754" y="276" width="285" height="80" rx="28" fill="#f4f1e8"/>
+  <text x="780" y="309" fill="#252827" font-family="Helvetica Neue, Arial" font-size="17" font-weight="650">The turn lands.</text>
+  <text x="780" y="335" fill="#5d6561" font-family="Helvetica Neue, Arial" font-size="15">Want more wonder before it?</text>
+  <rect x="58" y="683" width="1324" height="155" rx="26" fill="#202422"/>
+  <text x="89" y="723" fill="#9ca3a0" font-family="Helvetica Neue, Arial" font-size="14">DIRECTOR VIEW</text>
+  <text x="89" y="768" fill="#f4f1e8" font-family="Helvetica Neue, Arial" font-size="18">Picture</text>
+  <rect x="198" y="746" width="356" height="26" rx="8" fill="#e56b4c"/>
+  <rect x="565" y="746" width="430" height="26" rx="8" fill="#385d56"/>
+  <rect x="1006" y="746" width="262" height="26" rx="8" fill="#3b403e"/>
+  <text x="89" y="813" fill="#f4f1e8" font-family="Helvetica Neue, Arial" font-size="18">Sound</text>
+  <path d="M198 804 L224 789 L252 818 L282 795 L310 811 L342 786 L371 816 L402 791 L438 811 L476 792 L516 808 L554 802" fill="none" stroke="#82e5d0" stroke-width="3"/>
+  <text x="1242" y="813" fill="#82e5d0" font-family="Helvetica Neue, Arial" font-size="14">HASH VERIFIED</text>
+</svg>
