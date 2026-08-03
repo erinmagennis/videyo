@@ -27,8 +27,17 @@ function positionGraph() {
     node.style.left = `${node.dataset[story ? "storyX" : "graphX"]}%`;
     node.style.top = `${node.dataset[story ? "storyY" : "graphY"]}%`;
   });
-  window.setTimeout(updateLines, story ? 820 : 20);
+  followMovingNodes(story ? 900 : 80);
   window.setTimeout(() => moveYo(selectedNode), story ? 860 : 40);
+}
+
+function followMovingNodes(duration) {
+  const startedAt = performance.now();
+  function drawFrame(now) {
+    updateLines();
+    if (now - startedAt < duration) window.requestAnimationFrame(drawFrame);
+  }
+  window.requestAnimationFrame(drawFrame);
 }
 
 function updateLines() {

@@ -57,17 +57,17 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .graph-heading h2 { margin: 0.45rem 0 0; font: 500 clamp(1.65rem, 3vw, 2.8rem)/1 Georgia, serif; }
 .unwind-button { min-height: 48px; border: 0; border-radius: 999px; background: var(--lime); color: var(--ink); padding: 0 1.25rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .unwind-button[aria-pressed="true"] { background: var(--paper); }
-.graph-canvas { position: relative; height: 480px; margin-top: 1.15rem; overflow: hidden; border-radius: 28px; background-color: #101311; background-image: radial-gradient(circle at center, rgb(255 255 255 / 0.055) 1px, transparent 1.5px); background-size: 28px 28px; }
+.graph-canvas { position: relative; isolation: isolate; height: 480px; margin-top: 1.15rem; overflow: hidden; border-radius: 28px; background-color: #101311; background-image: radial-gradient(circle at center, rgb(255 255 255 / 0.055) 1px, transparent 1.5px); background-size: 28px 28px; }
 .graph-canvas::after { content: "KNOWLEDGE GRAPH"; position: absolute; left: 1rem; bottom: 1rem; color: #657069; font-size: 0.64rem; letter-spacing: 0.14em; }
 .graph-canvas.story-mode::after { content: "STORY LINE"; }
-.graph-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.graph-lines line { stroke: #61716a; stroke-linecap: round; opacity: 0.75; transition: all 850ms var(--ease); }
+.graph-lines { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.graph-lines line { stroke: #7f9288; stroke-linecap: round; opacity: 0.82; }
 .graph-lines line[data-weight="1"] { stroke-width: 2; opacity: 0.35; }
 .graph-lines line[data-weight="2"] { stroke-width: 4; opacity: 0.48; }
 .graph-lines line[data-weight="3"] { stroke-width: 7; opacity: 0.65; }
 .graph-lines line[data-weight="4"] { stroke: var(--mint); stroke-width: 10; opacity: 0.78; }
 .story-thread { fill: none; stroke: var(--mint); stroke-width: 7; stroke-linecap: round; opacity: 0; transition: opacity 500ms var(--ease) 300ms; }
-.story-mode .graph-lines line { opacity: 0.13; stroke-width: 2; }
+.story-mode .graph-lines line { opacity: 0.42; }
 .story-mode .story-thread { opacity: 0.8; }
 .graph-node { position: absolute; left: 0; top: 0; border: 0; background: transparent; color: var(--text); display: grid; justify-items: center; gap: 0.25rem; cursor: pointer; transform: translate(-50%, -50%); transition: left 850ms var(--ease), top 850ms var(--ease), transform var(--fast); z-index: 2; }
 .graph-node:hover { transform: translate(-50%, -50%) scale(1.07); }

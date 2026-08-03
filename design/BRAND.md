@@ -74,6 +74,8 @@ Erin's reaction:
 
 Correction: the visible graph is now the main creative mechanism. Characters, locations, ideas, and scenes move from relational space into story order. The first quest creates the cast and establishes how character choices affect the plot. Yo stays visible as a floating contextual thread and responds to comments on the selected object.
 
+Relationship lines remain visible and attached to their nodes throughout the graph-to-story animation. Story order adds a narrative thread without replacing the underlying connections.
+
 ## Cohesion correction
 
 Erin's direction: keep "yo, what happens next?" on one line, condense the opening, place the knowledge graph above the fold, move the sample story below it, and replace redundant project labeling with a clear statement that Videyo is the friend who helps bring videos to life and notices connections behind the scenes.
