@@ -1,3 +1,13 @@
+[project]
+name = "videyo"
+version = "0.1.0"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "genblaze-core==0.3.8",
+  "genblaze-s3==0.3.6",
+  "genblaze-openai==0.3.4",
+]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
