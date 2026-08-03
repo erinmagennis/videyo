@@ -34,6 +34,8 @@ Videyo should demonstrate a friendly, game-like video creation workflow where a 
 - Timeline: every scene is a first-class object with stable IDs. Graph nodes connect to scenes through visible, inspectable relationships. Selecting either surface highlights the other.
 - Storage: B2 stores project JSON, graph snapshots, generated media, and provenance metadata. Local state is the resilience fallback for the demo.
 - Generation: Genblaze is the primary demonstrated provider. The UI names the provider, model, prompt, input context, output, and storage destination so judges can see the integration.
+- Quest model: a quest is any gap that needs more clarity. Adding thought to it unlocks definition in a character, story, scene, relationship, branch, chapter, or arc.
+- Character rename: the reflective character formerly called Echo is now Iris, reducing confusion with Yo's conversational role.
 
 ## Action boundaries
 

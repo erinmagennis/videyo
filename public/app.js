@@ -14,8 +14,16 @@ let liveMode = false;
 let graphAnimationFrame = null;
 
 const extraGraphNodes = [
+  ["scene-01", "Signal", "Scene", 6, 10, 7, 18, "01", "Scene 01: Mira finds the signal under the glass horizon."],
+  ["scene-02", "The map", "Scene", 17, 8, 17, 15, "02", "Scene 02: The map redraws itself while Mira is watching."],
+  ["scene-03", "Glass shore", "Scene", 31, 14, 28, 20, "03", "Scene 03: Iris appears at the Glass Shore."],
+  ["scene-04", "Archive", "Scene", 7, 53, 35, 25, "04", "Scene 04: Mira finds the first record of the other world."],
+  ["scene-05", "Reflection", "Scene", 29, 58, 44, 30, "05", "Scene 05: A reflection becomes evidence instead of a warning."],
+  ["scene-06", "The turn", "Scene", 37, 37, 56, 36, "06", "Scene 06: Mira and Iris disagree about which world is real."],
+  ["scene-07", "City below", "Scene", 12, 70, 68, 43, "07", "Scene 07: The City Below opens beneath the ocean."],
+  ["scene-08", "Return", "Scene", 30, 76, 80, 50, "08", "Scene 08: The signal returns with a different meaning."],
   ["signal", "Signal", "Idea", 10, 18, 18, 26, "01", "The signal arrives before Mira understands what it wants."],
-  ["map", "The map", "Idea", 42, 18, 38, 24, "02", "The map redraws itself when Echo enters the frame."],
+  ["map", "The map", "Idea", 42, 18, 38, 24, "02", "The map redraws itself when Iris enters the frame."],
   ["archive", "Archive room", "Location", 10, 70, 18, 72, "04", "The archive holds the first record of the other world."],
   ["reflection", "Reflection", "Idea", 61, 20, 58, 28, "05", "A reflection becomes evidence instead of a warning."],
   ["threshold", "The threshold", "Scene", 82, 64, 82, 54, "07", "Mira chooses which world gets to continue."],
@@ -27,7 +35,8 @@ function buildDynamicGraph() {
   const svg = document.querySelector("#graph-lines");
   extraGraphNodes.forEach(([id, label, type, graphX, graphY, storyX, storyY, scene, note]) => {
     const node = document.createElement("button");
-    node.className = `graph-node ${type.toLowerCase()}`;
+    const isScenePreview = id.startsWith("scene-");
+    node.className = `graph-node ${type.toLowerCase()}${isScenePreview ? " scene-preview" : ""}`;
     node.dataset.id = id;
     node.dataset.type = type;
     node.dataset.graphX = graphX;
@@ -37,14 +46,18 @@ function buildDynamicGraph() {
     node.dataset.scene = scene;
     node.dataset.note = note;
     node.type = "button";
-    node.innerHTML = `<span class="node-orb">·</span><strong>${label}</strong><small>${type} · Scene ${scene}</small>`;
+    node.innerHTML = isScenePreview
+      ? `<span class="node-orb"><i></i></span><strong>${scene}</strong><small>${label}</small>`
+      : `<span class="node-orb">·</span><strong>${label}</strong><small>${type} · Scene ${scene}</small>`;
     graphCanvas.insertBefore(node, document.querySelector(".yo-floater"));
   });
   const edges = [
-    ["signal", "mira", 3], ["signal", "map", 2], ["map", "echo", 3], ["map", "mirror", 2],
-    ["archive", "shore", 2], ["archive", "reflection", 2], ["reflection", "echo", 3],
+    ["mira", "scene-01", 2], ["mira", "scene-02", 2], ["mira", "scene-03", 2], ["mira", "scene-04", 2],
+    ["mira", "scene-05", 2], ["mira", "scene-06", 3], ["mira", "scene-07", 2], ["mira", "scene-08", 2],
+    ["signal", "mira", 3], ["signal", "map", 2], ["map", "iris", 3], ["map", "mirror", 2],
+    ["archive", "shore", 2], ["archive", "reflection", 2], ["reflection", "iris", 3],
     ["reflection", "threshold", 2], ["threshold", "turn", 3], ["threshold", "undertow", 2],
-    ["undertow", "shore", 2], ["undertow", "return", 2], ["beacon", "echo", 2], ["beacon", "return", 1]
+    ["undertow", "shore", 2], ["undertow", "return", 2], ["beacon", "iris", 2], ["beacon", "return", 1]
   ];
   edges.forEach(([from, to, weight]) => {
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -59,12 +72,12 @@ function buildDynamicGraph() {
 }
 
 const nodeNotes = {
-  mira: "Mira maps what exists. Echo maps what might. They share six scenes, but only disagree in one.",
-  echo: "Echo appears whenever Mira avoids a choice. Four of those appearances happen at the Glass Shore.",
+  mira: "Mira maps what exists. Iris maps what might. They share six scenes, but only disagree in one.",
+  iris: "Iris appears whenever Mira avoids a choice. Four of those appearances happen at the Glass Shore.",
   shore: "The Glass Shore holds three scenes and both characters. It is where the mirror motif first becomes part of the plot.",
   mirror: "The mirror starts as an image, becomes a choice in Scene 06, and returns as proof in the ending.",
-  turn: "This is the only scene where Mira and Echo disagree. Changing it will affect the Reveal and Return quests.",
-  city: "The City Below appears twice. Echo knows it before Mira does, which makes the Reveal feel earned.",
+  turn: "This is the only scene where Mira and Iris disagree. Changing it will affect the Reveal and Return quests.",
+  city: "The City Below appears twice. Iris knows it before Mira does, which makes the Reveal feel earned.",
   return: "The ending reconnects Mira, the city, and the mirror choice. The opening signal can return here as sound.",
 };
 
@@ -131,7 +144,7 @@ function selectNode(id) {
   yoTitle.textContent = `Looking at ${node.querySelector("strong").textContent}`;
   const note = nodeNotes[id] || node.dataset.note || "This dot is part of the living story. Ask Yo what it changes next.";
   yoThread.innerHTML = `<p>${note}</p>`;
-  const scene = node.dataset.scene || ({ mira: "03", echo: "05", shore: "03", mirror: "06", turn: "06", city: "07", return: "09" }[id] || "06");
+  const scene = node.dataset.scene || ({ mira: "03", iris: "05", shore: "03", mirror: "06", turn: "06", city: "07", return: "09" }[id] || "06");
   document.querySelector("#selected-label").textContent = `SCENE ${scene} · ${node.querySelector("strong").textContent.toUpperCase()}`;
   document.querySelector("#stage-prompt").textContent = note;
   persistProject();
@@ -206,7 +219,7 @@ async function generateScene() {
     const response = await fetch("/api/pipeline", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ prompt: `${prompt} Preserve Mira, Echo, and the mirror motif.`, mode: liveMode ? "live" : "demo" }),
+      body: JSON.stringify({ prompt: `${prompt} Preserve Mira, Iris, and the mirror motif.`, mode: liveMode ? "live" : "demo" }),
     });
     const payload = await response.json();
     if (!response.ok || !payload.ok) throw new Error(payload.error || "The pipeline did not complete.");

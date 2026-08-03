@@ -12,7 +12,7 @@ Show the Videyo logo, headline, and full knowledge graph.
 
 "Start with the story graph. Each circle holds a character, place, idea, or scene. The lines show how often they meet. Point to any circle and Yo sees exactly what you are seeing."
 
-Select Mira, Echo, and the mirror choice. Show the tethered Yo thread changing with the selection.
+Select Mira, Iris, and the mirror choice. Show the tethered Yo thread changing with the selection.
 
 ## 0:48 to 1:10
 

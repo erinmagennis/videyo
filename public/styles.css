@@ -48,7 +48,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .mode-button[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
 
 .intro { padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(2.25rem, 4vw, 3.75rem); }
-.intro h1 { margin: 0 0 1.2rem; max-width: none; white-space: nowrap; display: flex; align-items: center; gap: clamp(1.35rem, 2.4vw, 2.6rem); font: 500 clamp(3rem, 6.1vw, 5.75rem)/0.94 Georgia, "Times New Roman", serif; letter-spacing: -0.055em; }
+.intro h1 { margin: 0 0 1.2rem; max-width: none; white-space: nowrap; display: flex; align-items: center; gap: clamp(0.45rem, 1vw, 0.9rem); font: 500 clamp(3rem, 6.1vw, 5.75rem)/0.94 Georgia, "Times New Roman", serif; letter-spacing: -0.055em; }
 .headline-yo { width: clamp(126px, 13vw, 198px); height: clamp(96px, 10vw, 148px); object-fit: contain; object-position: center; }
 .intro-copy { max-width: 670px; margin: 0; color: var(--muted); font-size: clamp(1rem, 1.4vw, 1.15rem); line-height: 1.55; }
 
@@ -80,14 +80,19 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .graph-node:hover { transform: translate(-50%, -50%) scale(1.07); }
 .graph-node .node-orb { width: 58px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: #344039; border: 2px solid #6d7a73; color: var(--text); font-weight: 760; box-shadow: 0 10px 30px rgb(0 0 0 / 0.24); transition: box-shadow var(--fast), border-color var(--fast), background var(--fast); }
 .graph-node.character .node-orb { width: 82px; font: 600 1.55rem Georgia, serif; background: var(--coral); color: var(--ink); border: 0; }
-.graph-node.echo .node-orb { background: var(--mint); }
+.graph-node.iris .node-orb { background: var(--mint); }
 .graph-node.location .node-orb { width: 66px; border-radius: 24px 24px 50% 50%; background: #456356; }
 .graph-node.idea .node-orb { width: 50px; background: var(--sun); border: 0; }
 .graph-node.scene .node-orb { width: 62px; background: var(--paper); color: var(--ink); border: 0; }
+.graph-node.scene-preview { width: 70px; gap: 0.2rem; }
+.scene-preview .node-orb { width: 58px; height: 38px; border-radius: 9px; border: 2px solid rgb(243 215 95 / 0.72); background: linear-gradient(145deg, #ef714d 0 35%, #f3d75f 36% 58%, #273b35 59%); box-shadow: 0 8px 20px rgb(0 0 0 / 0.28); }
+.scene-preview .node-orb i { display: block; width: 16px; height: 10px; margin: 11px auto 0; border-radius: 2px; background: rgb(247 244 237 / 0.82); }
+.scene-preview strong { font-size: 0.72rem; }
+.scene-preview small { max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .graph-node strong { font-size: 0.88rem; }
 .graph-node small { color: var(--muted); font-size: 0.7rem; white-space: nowrap; }
 .graph-node.active .node-orb { box-shadow: 0 0 0 9px rgb(214 255 85 / 0.16), 0 12px 40px rgb(0 0 0 / 0.3); border-color: var(--lime); }
-.yo-floater { position: absolute; width: min(320px, calc(100% - 2rem)); left: 0; top: 0; z-index: 3; border-radius: 24px; background: var(--paper); color: var(--ink); padding: 1rem; box-shadow: 0 28px 70px rgb(0 0 0 / 0.4); transition: left 420ms var(--ease), top 420ms var(--ease), transform 360ms var(--ease); }
+.yo-floater { position: absolute; width: min(270px, calc(100% - 2rem)); left: 0; top: 0; z-index: 3; border-radius: 20px; background: var(--paper); color: var(--ink); padding: 0.8rem; box-shadow: 0 20px 45px rgb(0 0 0 / 0.35); transition: left 420ms var(--ease), top 420ms var(--ease), transform 360ms var(--ease); }
 .yo-floater.context-change { transform: scale(1.035); }
 .yo-floater-head { display: flex; align-items: center; gap: 0.65rem; }
 .yo-floater-head p { margin: 0; font-weight: 750; }
