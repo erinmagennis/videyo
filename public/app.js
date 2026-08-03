@@ -1,6 +1,7 @@
 const graphNodes = [...document.querySelectorAll(".graph-node")];
 const graphCanvas = document.querySelector("#graph-canvas");
-const graphLines = [...document.querySelectorAll("#graph-lines line")];
+const graphLines = [...document.querySelectorAll("#graph-lines line[data-from]")];
+const yoTether = document.querySelector("#yo-tether");
 const yoFloater = document.querySelector("#yo-floater");
 const yoTitle = document.querySelector("#yo-title");
 const yoThread = document.querySelector("#yo-thread");
@@ -57,6 +58,24 @@ function updateLines() {
     line.setAttribute("x2", to.left + to.width / 2 - canvasBox.left);
     line.setAttribute("y2", to.top + to.height / 2 - canvasBox.top);
   });
+  updateYoPosition(canvasBox);
+}
+
+function updateYoPosition(canvasBox = graphCanvas.getBoundingClientRect()) {
+  const orb = document.querySelector(`[data-id="${selectedNode}"] .node-orb`).getBoundingClientRect();
+  const nodeX = orb.left + orb.width / 2 - canvasBox.left;
+  const nodeY = orb.top + orb.height / 2 - canvasBox.top;
+  const chatWidth = yoFloater.offsetWidth;
+  const chatHeight = yoFloater.offsetHeight;
+  const placeRight = nodeX < canvasBox.width * 0.55;
+  const left = Math.max(16, Math.min(canvasBox.width - chatWidth - 16, placeRight ? nodeX + 82 : nodeX - chatWidth - 82));
+  const top = Math.max(16, Math.min(canvasBox.height - chatHeight - 16, nodeY - chatHeight / 2));
+  yoFloater.style.left = `${left}px`;
+  yoFloater.style.top = `${top}px`;
+  yoTether.setAttribute("x1", nodeX);
+  yoTether.setAttribute("y1", nodeY);
+  yoTether.setAttribute("x2", placeRight ? left : left + chatWidth);
+  yoTether.setAttribute("y2", top + Math.min(72, chatHeight / 2));
 }
 
 function selectNode(id) {
@@ -72,6 +91,7 @@ function selectNode(id) {
 function moveYo(id) {
   const node = document.querySelector(`[data-id="${id}"]`);
   if (!node) return;
+  updateYoPosition();
   yoFloater.classList.add("context-change");
   window.setTimeout(() => yoFloater.classList.remove("context-change"), 360);
 }

@@ -10,8 +10,7 @@
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <a class="wordmark" href="#studio" aria-label="Videyo home">videyo</a>
-        <p class="platform-promise">Your creative friend for video. Point to anything and Yo brings back the connections you might have missed.</p>
+        <a class="wordmark" href="#studio" aria-label="Videyo home"><span class="yo-mark">yo</span><span>videyo</span></a>
         <button class="mode-button" id="mode-button" type="button" aria-pressed="false">
           Demonstration mode
         </button>
@@ -19,7 +18,6 @@
 
       <main id="studio">
         <section class="intro" aria-labelledby="page-title">
-          <p class="eyebrow">BUILD WITH A FRIEND</p>
           <h1 id="page-title">yo, what happens next?</h1>
           <p class="intro-copy">Point to what you see. Yo connects the dots behind the scenes and helps you bring new videos to life.</p>
         </section>
@@ -39,6 +37,7 @@
               <line data-from="turn" data-to="city" data-weight="2" />
               <line data-from="shore" data-to="turn" data-weight="2" />
               <line data-from="city" data-to="return" data-weight="1" />
+              <line class="yo-tether" id="yo-tether" />
               <path class="story-thread" d="M70 290 C280 90 510 320 780 170 C930 90 1040 185 1160 110" />
             </svg>
 
@@ -65,7 +64,7 @@
             </button>
 
             <aside class="yo-floater" id="yo-floater" aria-labelledby="yo-title">
-              <div class="yo-floater-head"><span class="yo-avatar">yo</span><p id="yo-title">Looking at Mira</p></div>
+              <div class="yo-floater-head"><span class="yo-mark yo-avatar">yo</span><p id="yo-title">Looking at Mira</p></div>
               <div class="yo-thread" id="yo-thread">
                 <p>Mira maps what exists. Echo maps what might. They share six scenes, but only disagree in one.</p>
               </div>
@@ -127,13 +126,6 @@
               <button class="quiet-action" id="keep-button" type="button">Keep current version</button>
             </div>
           </div>
-          <aside class="scene-knowledge" aria-label="Knowledge connected to this scene">
-            <p class="eyebrow">THIS SCENE KNOWS</p>
-            <button type="button" data-focus="mira">Mira <span>lead</span></button>
-            <button type="button" data-focus="echo">Echo <span>appears in reflection</span></button>
-            <button type="button" data-focus="mirror">Mirror choice <span>motif returns</span></button>
-            <button type="button" data-focus="shore">Glass Shore <span>location</span></button>
-          </aside>
         </section>
 
         <section class="production-record" aria-labelledby="record-title">

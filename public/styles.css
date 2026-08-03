@@ -37,16 +37,17 @@ button { color: inherit; }
 button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
 
 .app-shell { width: min(100%, 1600px); margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 4.25rem) 4rem; }
-.topbar { min-height: 76px; display: grid; grid-template-columns: minmax(130px, 0.35fr) minmax(280px, 1fr) auto; align-items: center; gap: 1.5rem; }
-.wordmark { color: var(--text); text-decoration: none; font-size: clamp(1.6rem, 3vw, 2.15rem); font-weight: 720; letter-spacing: -0.05em; }
-.platform-promise { max-width: 680px; margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.35; }
+.topbar { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+.wordmark { color: var(--text); text-decoration: none; display: inline-flex; align-items: center; gap: 0.8rem; font-size: clamp(1.6rem, 3vw, 2.15rem); font-weight: 720; letter-spacing: -0.05em; }
+.yo-mark { position: relative; width: 52px; height: 42px; border-radius: 22px 10px 10px 22px; background: var(--sun); color: var(--ink); display: inline-grid; place-items: center; flex: 0 0 auto; font-size: 1rem; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.yo-mark::after { content: ""; position: absolute; right: -10px; top: 10px; width: 0; height: 0; border-top: 11px solid transparent; border-bottom: 11px solid transparent; border-left: 13px solid var(--sun); }
 .project-kicker, .eyebrow { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.12em; }
 .mode-button { justify-self: end; min-height: 44px; border: 0; border-radius: 999px; background: var(--surface); color: var(--muted); padding: 0.65rem 1rem; cursor: pointer; }
 .mode-button[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
 
-.intro { padding: clamp(0.85rem, 2vw, 1.75rem) 0 1.1rem; }
-.intro h1 { margin: 0.35rem 0 0.45rem; max-width: none; white-space: nowrap; font: 500 clamp(3rem, 6.1vw, 5.75rem)/0.94 Georgia, "Times New Roman", serif; letter-spacing: -0.055em; }
-.intro-copy { margin: 0; color: var(--muted); font-size: clamp(0.95rem, 1.4vw, 1.15rem); }
+.intro { padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(2.25rem, 4vw, 3.75rem); }
+.intro h1 { margin: 0 0 1rem; max-width: none; white-space: nowrap; font: 500 clamp(3rem, 6.1vw, 5.75rem)/0.94 Georgia, "Times New Roman", serif; letter-spacing: -0.055em; }
+.intro-copy { max-width: 670px; margin: 0; color: var(--muted); font-size: clamp(1rem, 1.4vw, 1.15rem); line-height: 1.55; }
 
 .story-example { margin: 2rem 0 1.5rem; display: grid; grid-template-columns: minmax(150px, 0.35fr) minmax(0, 1.7fr); gap: 2rem; align-items: baseline; }
 .story-example p { color: var(--coral); font-size: 0.72rem; letter-spacing: 0.13em; }
@@ -66,6 +67,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .graph-lines line[data-weight="2"] { stroke-width: 4; opacity: 0.48; }
 .graph-lines line[data-weight="3"] { stroke-width: 7; opacity: 0.65; }
 .graph-lines line[data-weight="4"] { stroke: var(--mint); stroke-width: 10; opacity: 0.78; }
+.graph-lines .yo-tether { stroke: var(--sun); stroke-width: 2; stroke-dasharray: 5 7; opacity: 0.9; }
 .story-thread { fill: none; stroke: var(--mint); stroke-width: 7; stroke-linecap: round; opacity: 0; transition: opacity 250ms var(--ease); }
 .story-mode .graph-lines line { opacity: 0.42; }
 .story-mode .story-thread { opacity: 0.8; transition-delay: 300ms; }
@@ -80,9 +82,8 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .graph-node strong { font-size: 0.88rem; }
 .graph-node small { color: var(--muted); font-size: 0.7rem; white-space: nowrap; }
 .graph-node.active .node-orb { box-shadow: 0 0 0 9px rgb(214 255 85 / 0.16), 0 12px 40px rgb(0 0 0 / 0.3); border-color: var(--lime); }
-.yo-floater { position: fixed; width: min(340px, calc(100% - 2rem)); right: 1.5rem; bottom: 1.5rem; z-index: 8; border-radius: 24px; background: var(--paper); color: var(--ink); padding: 1rem; box-shadow: 0 28px 70px rgb(0 0 0 / 0.4); transition: transform 360ms var(--ease); }
+.yo-floater { position: absolute; width: min(320px, calc(100% - 2rem)); left: 0; top: 0; z-index: 3; border-radius: 24px; background: var(--paper); color: var(--ink); padding: 1rem; box-shadow: 0 28px 70px rgb(0 0 0 / 0.4); transition: left 420ms var(--ease), top 420ms var(--ease), transform 360ms var(--ease); }
 .yo-floater.context-change { transform: scale(1.035); }
-.yo-floater::before { content: ""; position: absolute; left: 28px; bottom: -14px; width: 28px; height: 28px; background: var(--paper); transform: rotate(45deg); border-radius: 0 0 7px 0; }
 .yo-floater-head { display: flex; align-items: center; gap: 0.65rem; }
 .yo-floater-head p { margin: 0; font-weight: 750; }
 .yo-thread { max-height: 126px; overflow: auto; margin: 0.75rem 0; padding-right: 0.25rem; }
@@ -96,7 +97,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .legend-location { background: #456356; }
 .legend-idea { background: var(--sun); }
 
-.character-quest { margin: 5rem 0 2rem; display: grid; grid-template-columns: 0.25fr 0.75fr 1.4fr; gap: clamp(1rem, 3vw, 3rem); align-items: center; }
+.character-quest { margin: clamp(7rem, 12vw, 12rem) 0 clamp(5rem, 9vw, 9rem); display: grid; grid-template-columns: 0.25fr 0.75fr 1.4fr; gap: clamp(1.5rem, 4vw, 4rem); align-items: center; }
 .quest-number { align-self: start; color: var(--lime); font-size: 0.75rem; letter-spacing: 0.12em; }
 .character-intro h2 { margin: 0.35rem 0 0.7rem; font: 500 clamp(2.2rem, 4vw, 4rem)/0.98 Georgia, serif; }
 .character-intro > p:last-child { color: var(--muted); line-height: 1.55; }
@@ -128,7 +129,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .quest.active span, .quest.active small, .quest.complete span, .quest.complete small { color: rgb(24 32 28 / 0.7); }
 .yo-signal { position: absolute; left: 56%; top: 22%; width: 56px; aspect-ratio: 1; border-radius: 50%; background: var(--paper); color: var(--ink); display: grid; place-items: center; font-weight: 750; font-size: 1.15rem; box-shadow: var(--shadow); }
 
-.workspace { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.7fr); gap: clamp(1rem, 2vw, 1.6rem); align-items: stretch; }
+.workspace { display: block; max-width: 1180px; margin: 0 auto; }
 .scene-stage, .companion { min-width: 0; }
 .scene-stage { background: var(--surface); border-radius: var(--radius-lg); padding: clamp(1rem, 2vw, 1.6rem); }
 .stage-toolbar { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: 0.72rem; letter-spacing: 0.08em; padding-bottom: 1rem; }
@@ -149,7 +150,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 
 .companion { background: var(--paper); color: var(--ink); border-radius: var(--radius-lg); padding: clamp(1.25rem, 2.5vw, 2rem); display: flex; flex-direction: column; }
 .yo-heading { display: flex; align-items: center; gap: 0.9rem; }
-.yo-avatar { width: 48px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: var(--sun); font-weight: 750; }
+.yo-avatar { width: 48px; height: 38px; font-size: 0.92rem; }
 .yo-heading p { margin: 0 0 0.15rem; font-weight: 700; }
 .yo-heading div span { color: #6d756f; font-size: 0.85rem; }
 .yo-message { font: 500 clamp(1.35rem, 2.3vw, 2.15rem)/1.16 Georgia, serif; letter-spacing: -0.025em; }
@@ -163,7 +164,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .yo-input-row input { min-width: 0; flex: 1; min-height: 48px; border: 1px solid #c5c3ba; border-radius: 14px; background: #fffdf8; color: var(--ink); padding: 0 0.8rem; }
 .yo-input-row button { min-width: 56px; border: 0; border-radius: 14px; background: var(--ink); cursor: pointer; }
 
-.production-record { margin-top: 1.5rem; border-radius: var(--radius-md); background: var(--surface); padding: 1.4rem; display: grid; grid-template-columns: minmax(210px, 0.7fr) 2fr; gap: 1.5rem; align-items: center; }
+.production-record { margin-top: clamp(4rem, 8vw, 8rem); border-top: 1px solid #333b37; padding: 2rem 0; display: grid; grid-template-columns: minmax(210px, 0.7fr) 2fr; gap: 2.5rem; align-items: center; }
 .production-record p { margin: 0 0 0.45rem; }
 .production-record dl { margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
 .production-record dl div { min-width: 0; }
@@ -175,8 +176,6 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 @keyframes pulse { from { transform: scale(0.96); } to { transform: scale(1.04); } }
 
 @media (max-width: 900px) {
-  .topbar { grid-template-columns: 1fr auto; }
-  .platform-promise { grid-column: 1 / -1; grid-row: 2; padding-bottom: 0.8rem; }
   .workspace { grid-template-columns: 1fr; }
   .world-map { height: 310px; }
   .production-record { grid-template-columns: 1fr; }
@@ -209,7 +208,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .graph-node small { display: none; }
   .graph-node.character .node-orb { width: 58px; }
   .graph-node .node-orb, .graph-node.location .node-orb, .graph-node.scene .node-orb { width: 46px; }
-  .yo-floater { right: 0.75rem; bottom: 0.75rem; width: calc(100% - 1.5rem); }
+  .yo-floater { width: calc(100% - 2rem); }
   .character-quest { grid-template-columns: 1fr; }
   .character-sheet { grid-template-columns: 82px 1fr; min-height: 280px; }
   .character-portrait { width: 76px; font-size: 2.4rem; }
