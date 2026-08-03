@@ -63,37 +63,53 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .graph-heading h2 { margin: 0.45rem 0 0; font: 500 clamp(1.65rem, 3vw, 2.8rem)/1 Georgia, serif; }
 .unwind-button { min-height: 48px; border: 0; border-radius: 999px; background: var(--lime); color: var(--ink); padding: 0 1.25rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .unwind-button[aria-pressed="true"] { background: var(--paper); }
-.graph-canvas { position: relative; isolation: isolate; height: 480px; margin-top: 1.15rem; overflow: hidden; border-radius: 28px; background-color: #101311; background-image: radial-gradient(circle at center, rgb(255 255 255 / 0.055) 1px, transparent 1.5px); background-size: 28px 28px; }
+.graph-canvas { position: relative; isolation: isolate; height: 480px; margin-top: 1.15rem; overflow: hidden; border-radius: 28px; background-color: #101311; background-image: radial-gradient(circle at center, rgb(255 255 255 / 0.075) 1px, transparent 1.5px); background-size: 28px 28px; }
 .graph-canvas::after { content: "KNOWLEDGE GRAPH"; position: absolute; left: 1rem; bottom: 1rem; color: #657069; font-size: 0.64rem; letter-spacing: 0.14em; }
 .graph-canvas.story-mode::after { content: "STORY LINE"; }
 .graph-lines { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.graph-lines line { stroke: #7f9288; stroke-linecap: round; opacity: 0.82; }
+.graph-lines line { stroke: #87988f; stroke-linecap: round; opacity: 0.62; }
 .graph-lines line[data-weight="1"] { stroke-width: 2; opacity: 0.35; }
-.graph-lines line[data-weight="2"] { stroke-width: 4; opacity: 0.48; }
-.graph-lines line[data-weight="3"] { stroke-width: 7; opacity: 0.65; }
-.graph-lines line[data-weight="4"] { stroke: var(--mint); stroke-width: 10; opacity: 0.78; }
+.graph-lines line[data-weight="2"] { stroke-width: 2; opacity: 0.42; }
+.graph-lines line[data-weight="3"] { stroke-width: 3; opacity: 0.58; }
+.graph-lines line[data-weight="4"] { stroke: var(--mint); stroke-width: 4; opacity: 0.72; }
 .graph-lines .yo-tether { stroke: var(--sun); stroke-width: 2; stroke-dasharray: 5 7; opacity: 0.9; }
 .story-thread { fill: none; stroke: var(--mint); stroke-width: 7; stroke-linecap: round; opacity: 0; transition: opacity 250ms var(--ease); }
 .story-mode .graph-lines line { opacity: 0.42; }
 .story-mode .story-thread { opacity: 0.8; transition-delay: 300ms; }
 .graph-node { position: absolute; left: 0; top: 0; border: 0; background: transparent; color: var(--text); display: grid; justify-items: center; gap: 0.25rem; cursor: pointer; transform: translate(-50%, -50%); transition: left 850ms var(--ease), top 850ms var(--ease), transform var(--fast); z-index: 2; }
 .graph-node:hover { transform: translate(-50%, -50%) scale(1.07); }
-.graph-node .node-orb { width: 58px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: #344039; border: 2px solid #6d7a73; color: var(--text); font-weight: 760; box-shadow: 0 10px 30px rgb(0 0 0 / 0.24); transition: box-shadow var(--fast), border-color var(--fast), background var(--fast); }
-.graph-node.character .node-orb { width: 82px; font: 600 1.55rem Georgia, serif; background: var(--coral); color: var(--ink); border: 0; }
+.graph-node .node-orb { width: 22px; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; background: #344039; border: 2px solid #6d7a73; color: transparent; font-weight: 760; box-shadow: 0 6px 18px rgb(0 0 0 / 0.24); transition: box-shadow var(--fast), border-color var(--fast), background var(--fast), width var(--fast); }
+.graph-node.character .node-orb { width: 34px; font: 600 0.95rem Georgia, serif; background: var(--coral); color: var(--ink); border: 0; }
 .graph-node.iris .node-orb { background: var(--mint); }
-.graph-node.location .node-orb { width: 66px; border-radius: 24px 24px 50% 50%; background: #456356; }
-.graph-node.idea .node-orb { width: 50px; background: var(--sun); border: 0; }
-.graph-node.scene .node-orb { width: 62px; background: var(--paper); color: var(--ink); border: 0; }
+.graph-node.location .node-orb { width: 24px; border-radius: 9px; background: #456356; }
+.graph-node.idea .node-orb { width: 20px; background: var(--sun); border: 0; }
+.graph-node.scene .node-orb { width: 22px; background: var(--paper); color: var(--ink); border: 0; }
 .graph-node.scene-preview { width: 70px; gap: 0.2rem; }
 .scene-preview .node-orb { width: 58px; height: 38px; border-radius: 9px; border: 2px solid rgb(243 215 95 / 0.72); background: linear-gradient(145deg, #ef714d 0 35%, #f3d75f 36% 58%, #273b35 59%); box-shadow: 0 8px 20px rgb(0 0 0 / 0.28); }
 .scene-preview .node-orb i { display: block; width: 16px; height: 10px; margin: 11px auto 0; border-radius: 2px; background: rgb(247 244 237 / 0.82); }
 .scene-preview strong { font-size: 0.72rem; }
 .scene-preview small { max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.graph-node strong { font-size: 0.88rem; }
-.graph-node small { color: var(--muted); font-size: 0.7rem; white-space: nowrap; }
-.graph-node.active .node-orb { box-shadow: 0 0 0 9px rgb(214 255 85 / 0.16), 0 12px 40px rgb(0 0 0 / 0.3); border-color: var(--lime); }
+.graph-node strong { font-size: 0.72rem; opacity: 0.78; }
+.graph-node small { color: var(--muted); font-size: 0.6rem; white-space: nowrap; opacity: 0.72; }
+.graph-node.active .node-orb { width: 30px; box-shadow: 0 0 0 7px rgb(214 255 85 / 0.14), 0 10px 28px rgb(0 0 0 / 0.3); border-color: var(--lime); }
 .yo-floater { position: absolute; width: min(270px, calc(100% - 2rem)); left: 0; top: 0; z-index: 3; border-radius: 20px; background: var(--paper); color: var(--ink); padding: 0.8rem; box-shadow: 0 20px 45px rgb(0 0 0 / 0.35); transition: left 420ms var(--ease), top 420ms var(--ease), transform 360ms var(--ease); }
 .yo-floater.context-change { transform: scale(1.035); }
+.story-timeline { display: none; position: absolute; inset: 1.25rem; z-index: 4; overflow: auto; padding: 0.2rem 0 1rem; }
+.timeline-mode .graph-node, .timeline-mode .graph-lines { opacity: 0; pointer-events: none; }
+.timeline-mode .story-timeline { display: block; }
+.timeline-overview { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgb(247 244 237 / 0.16); }
+.timeline-overview span, .timeline-kicker { color: var(--muted); font-size: 0.62rem; letter-spacing: 0.14em; }
+.timeline-overview strong { display: block; margin-top: 0.3rem; font: 500 1.6rem Georgia, serif; }
+.timeline-chapter { margin-top: 1rem; padding: 0.9rem 0 0.2rem 1rem; border-left: 2px solid var(--mint); }
+.timeline-chapter header { display: flex; align-items: baseline; gap: 0.8rem; }
+.timeline-chapter header strong { font-size: 1rem; }
+.timeline-branch { margin-top: 0.75rem; }
+.timeline-branch-label { color: var(--muted); font-size: 0.62rem; letter-spacing: 0.12em; }
+.timeline-scenes { display: flex; gap: 0.55rem; margin-top: 0.55rem; overflow-x: auto; padding-bottom: 0.25rem; }
+.timeline-scene { min-width: 126px; border: 1px solid rgb(247 244 237 / 0.14); border-radius: 12px; background: rgb(34 42 38 / 0.72); color: var(--text); padding: 0.65rem; text-align: left; cursor: pointer; }
+.timeline-scene:hover, .timeline-scene.active { border-color: var(--lime); background: rgb(214 255 85 / 0.12); }
+.timeline-scene span { display: block; color: var(--muted); font-size: 0.62rem; }
+.timeline-scene strong { display: block; margin-top: 0.3rem; font-size: 0.78rem; }
 .yo-floater-head { display: flex; align-items: center; gap: 0.65rem; }
 .yo-floater-head p { margin: 0; font-weight: 750; }
 .yo-thread { max-height: 126px; overflow: auto; margin: 0.75rem 0; padding-right: 0.25rem; }

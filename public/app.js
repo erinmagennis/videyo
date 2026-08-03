@@ -7,6 +7,7 @@ const yoTitle = document.querySelector("#yo-title");
 const yoThread = document.querySelector("#yo-thread");
 const yoInput = document.querySelector("#yo-input");
 const unwindButton = document.querySelector("#unwind-button");
+const storyTimeline = document.querySelector("#story-timeline");
 const toast = document.querySelector("#toast");
 let selectedNode = "mira";
 let graphMode = "graph";
@@ -83,12 +84,27 @@ const nodeNotes = {
 
 function positionGraph() {
   const story = graphMode === "story";
+  graphCanvas.classList.toggle("timeline-mode", story);
+  if (story) renderStoryTimeline();
   graphNodes.forEach((node) => {
     node.style.left = `${node.dataset[story ? "storyX" : "graphX"]}%`;
     node.style.top = `${node.dataset[story ? "storyY" : "graphY"]}%`;
   });
   followMovingNodes(story ? 900 : 80);
   window.setTimeout(() => moveYo(selectedNode), story ? 860 : 40);
+}
+
+function renderStoryTimeline() {
+  storyTimeline.innerHTML = `
+    <div class="timeline-overview"><div><span>STORY ARC</span><strong>The Glass Ocean</strong></div><span>MAIN SPINE · 3 CHAPTERS · 8 SCENES</span></div>
+    <section class="timeline-chapter"><header><span class="timeline-kicker">CHAPTER 01</span><strong>The Signal</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("01", "The signal", "scene-01")}${timelineScene("02", "The map", "scene-02")}${timelineScene("03", "Glass Shore", "scene-03")}</div></div></section>
+    <section class="timeline-chapter"><header><span class="timeline-kicker">CHAPTER 02</span><strong>The Reflection</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("04", "Archive room", "scene-04")}${timelineScene("05", "Reflection", "scene-05")}${timelineScene("06", "The turn", "scene-06")}</div></div><div class="timeline-branch"><span class="timeline-branch-label">BRANCH · FOLLOW THE MAP</span><div class="timeline-scenes">${timelineScene("06B", "Iris knows", "iris")}</div></div></section>
+    <section class="timeline-chapter"><header><span class="timeline-kicker">CHAPTER 03</span><strong>The Return</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("07", "City Below", "scene-07")}${timelineScene("08", "Return", "scene-08")}</div></div></section>`;
+  storyTimeline.querySelectorAll(".timeline-scene").forEach((scene) => scene.addEventListener("click", () => selectNode(scene.dataset.node)));
+}
+
+function timelineScene(number, label, node) {
+  return `<button class="timeline-scene${selectedNode === node ? " active" : ""}" data-node="${node}" type="button"><span>SCENE ${number}</span><strong>${label}</strong></button>`;
 }
 
 function followMovingNodes(duration) {
@@ -250,7 +266,7 @@ unwindButton.addEventListener("click", () => {
   graphMode = graphMode === "graph" ? "story" : "graph";
   graphCanvas.classList.toggle("story-mode", graphMode === "story");
   unwindButton.setAttribute("aria-pressed", String(graphMode === "story"));
-  unwindButton.textContent = graphMode === "story" ? "Return to knowledge" : "Unwind into story";
+  unwindButton.textContent = graphMode === "story" ? "Return to knowledge graph" : "Unwind into story";
   positionGraph();
 });
 
