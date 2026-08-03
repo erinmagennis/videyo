@@ -8,7 +8,8 @@ This repository contains a focused entry for the 2026 Backblaze Generative Media
 
 - Credential-free demonstration runs produce deterministic preview media and a verified Genblaze manifest.
 - Live runs use the Genblaze OpenAI provider to create an image.
-- Genblaze's `ObjectStorageSink` writes the live asset and manifest to Backblaze B2.
+- Genblaze's `ObjectStorageSink` writes the live asset and manifest to a private Backblaze B2 bucket.
+- The app returns a one-hour signed review URL while the durable B2 object remains private.
 - The response exposes the run ID, provider, model, asset SHA-256, manifest hash, verification result, and storage location.
 - Live generation fails closed unless every required credential and the explicit live-generation flag are present.
 

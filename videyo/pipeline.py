@@ -93,8 +93,9 @@ def run_live(raw_prompt: object) -> PipelineResponse:
     if not live_is_configured():
         raise RuntimeError("Live generation is not configured. Use demonstration mode.")
 
+    backend = S3StorageBackend.for_backblaze(os.environ["B2_BUCKET"])
     storage = ObjectStorageSink(
-        S3StorageBackend.for_backblaze(os.environ["B2_BUCKET"]),
+        backend,
         prefix="videyo",
         key_strategy=KeyStrategy.HIERARCHICAL,
     )
@@ -111,16 +112,18 @@ def run_live(raw_prompt: object) -> PipelineResponse:
         .run(sink=storage, timeout=180, max_retries=1)
     )
     asset = result.run.steps[0].assets[0]
+    asset_key = backend.key_from_url(asset.url)
+    review_url = backend.presigned_get_url(asset_key, expires_in=3600) if asset_key else asset.url
     return PipelineResponse(
         mode="live",
         run_id=result.run.run_id,
         provider=result.run.steps[0].provider,
         model=result.run.steps[0].model,
-        asset_url=asset.url,
+        asset_url=review_url,
         asset_sha256=asset.sha256 or "unavailable",
         manifest_hash=result.manifest.canonical_hash,
         manifest_verified=result.manifest.verify(),
-        storage="Backblaze B2",
+        storage="Private Backblaze B2 · one-hour signed view",
     )
 
 
@@ -141,4 +144,3 @@ def _quote_svg(svg: bytes) -> str:
     from urllib.parse import quote
 
     return quote(svg.decode("utf-8"), safe="")
-
