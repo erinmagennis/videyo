@@ -58,6 +58,8 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 
 .graph-workspace { border-radius: 38px; background: #181d1a; padding: clamp(1.25rem, 3vw, 2.5rem); box-shadow: var(--shadow); }
 .graph-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
+.graph-actions { display: flex; align-items: center; gap: 0.65rem; }
+.graph-add-button { min-height: 48px; border: 1px solid rgb(247 244 237 / 0.18); border-radius: 999px; padding: 0 1rem; }
 .graph-heading h2 { margin: 0.45rem 0 0; font: 500 clamp(1.65rem, 3vw, 2.8rem)/1 Georgia, serif; }
 .unwind-button { min-height: 48px; border: 0; border-radius: 999px; background: var(--lime); color: var(--ink); padding: 0 1.25rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
 .unwind-button[aria-pressed="true"] { background: var(--paper); }

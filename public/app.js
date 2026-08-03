@@ -1,6 +1,6 @@
-const graphNodes = [...document.querySelectorAll(".graph-node")];
+let graphNodes = [...document.querySelectorAll(".graph-node")];
 const graphCanvas = document.querySelector("#graph-canvas");
-const graphLines = [...document.querySelectorAll("#graph-lines line[data-from]")];
+let graphLines = [...document.querySelectorAll("#graph-lines line[data-from]")];
 const yoTether = document.querySelector("#yo-tether");
 const yoFloater = document.querySelector("#yo-floater");
 const yoTitle = document.querySelector("#yo-title");
@@ -12,6 +12,51 @@ let selectedNode = "mira";
 let graphMode = "graph";
 let liveMode = false;
 let graphAnimationFrame = null;
+
+const extraGraphNodes = [
+  ["signal", "Signal", "Idea", 10, 18, 18, 26, "01", "The signal arrives before Mira understands what it wants."],
+  ["map", "The map", "Idea", 42, 18, 38, 24, "02", "The map redraws itself when Echo enters the frame."],
+  ["archive", "Archive room", "Location", 10, 70, 18, 72, "04", "The archive holds the first record of the other world."],
+  ["reflection", "Reflection", "Idea", 61, 20, 58, 28, "05", "A reflection becomes evidence instead of a warning."],
+  ["threshold", "The threshold", "Scene", 82, 64, 82, 54, "07", "Mira chooses which world gets to continue."],
+  ["undertow", "Undertow", "Motif", 56, 78, 58, 80, "08", "The ocean keeps the memory of every discarded version."],
+  ["beacon", "Beacon field", "Location", 90, 22, 90, 22, "09", "The final signal points back to the beginning."]
+];
+
+function buildDynamicGraph() {
+  const svg = document.querySelector("#graph-lines");
+  extraGraphNodes.forEach(([id, label, type, graphX, graphY, storyX, storyY, scene, note]) => {
+    const node = document.createElement("button");
+    node.className = `graph-node ${type.toLowerCase()}`;
+    node.dataset.id = id;
+    node.dataset.type = type;
+    node.dataset.graphX = graphX;
+    node.dataset.graphY = graphY;
+    node.dataset.storyX = storyX;
+    node.dataset.storyY = storyY;
+    node.dataset.scene = scene;
+    node.dataset.note = note;
+    node.type = "button";
+    node.innerHTML = `<span class="node-orb">·</span><strong>${label}</strong><small>${type} · Scene ${scene}</small>`;
+    graphCanvas.insertBefore(node, document.querySelector(".yo-floater"));
+  });
+  const edges = [
+    ["signal", "mira", 3], ["signal", "map", 2], ["map", "echo", 3], ["map", "mirror", 2],
+    ["archive", "shore", 2], ["archive", "reflection", 2], ["reflection", "echo", 3],
+    ["reflection", "threshold", 2], ["threshold", "turn", 3], ["threshold", "undertow", 2],
+    ["undertow", "shore", 2], ["undertow", "return", 2], ["beacon", "echo", 2], ["beacon", "return", 1]
+  ];
+  edges.forEach(([from, to, weight]) => {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.dataset.from = from;
+    line.dataset.to = to;
+    line.dataset.weight = weight;
+    svg.insertBefore(line, document.querySelector("#yo-tether"));
+  });
+  graphNodes = [...document.querySelectorAll(".graph-node")];
+  graphLines = [...document.querySelectorAll("#graph-lines line[data-from]")];
+  graphNodes.forEach((node) => node.addEventListener("click", () => selectNode(node.dataset.id)));
+}
 
 const nodeNotes = {
   mira: "Mira maps what exists. Echo maps what might. They share six scenes, but only disagree in one.",
@@ -84,8 +129,49 @@ function selectNode(id) {
   selectedNode = id;
   graphNodes.forEach((item) => item.classList.toggle("active", item === node));
   yoTitle.textContent = `Looking at ${node.querySelector("strong").textContent}`;
-  yoThread.innerHTML = `<p>${nodeNotes[id]}</p>`;
+  const note = nodeNotes[id] || node.dataset.note || "This dot is part of the living story. Ask Yo what it changes next.";
+  yoThread.innerHTML = `<p>${note}</p>`;
+  const scene = node.dataset.scene || ({ mira: "03", echo: "05", shore: "03", mirror: "06", turn: "06", city: "07", return: "09" }[id] || "06");
+  document.querySelector("#selected-label").textContent = `SCENE ${scene} · ${node.querySelector("strong").textContent.toUpperCase()}`;
+  document.querySelector("#stage-prompt").textContent = note;
+  persistProject();
   moveYo(id);
+}
+
+function persistProject() {
+  const state = { selectedNode, graphMode, nodes: graphNodes.map((node) => ({ id: node.dataset.id, label: node.querySelector("strong").textContent, type: node.dataset.type })) };
+  window.localStorage.setItem("videyo-project", JSON.stringify(state));
+}
+
+function addDot() {
+  const label = window.prompt("Name this idea, character, scene, or place:", "New idea");
+  if (!label || !label.trim()) return;
+  const id = `custom-${Date.now()}`;
+  const node = document.createElement("button");
+  node.className = "graph-node idea";
+  node.dataset.id = id;
+  node.dataset.type = "Idea";
+  node.dataset.graphX = 48 + Math.round(Math.random() * 18);
+  node.dataset.graphY = 32 + Math.round(Math.random() * 34);
+  node.dataset.storyX = 50 + Math.round(Math.random() * 20);
+  node.dataset.storyY = 44 + Math.round(Math.random() * 28);
+  node.dataset.scene = "new";
+  node.dataset.note = `${label.trim()} is now part of the story world. Ask Yo where it belongs.`;
+  node.type = "button";
+  node.innerHTML = `<span class="node-orb">·</span><strong>${label.trim()}</strong><small>Idea · new thread</small>`;
+  graphCanvas.insertBefore(node, yoFloater);
+  const nearest = graphNodes.find((item) => item.dataset.id === selectedNode) || graphNodes[0];
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.dataset.from = id;
+  line.dataset.to = nearest.dataset.id;
+  line.dataset.weight = "2";
+  document.querySelector("#graph-lines").insertBefore(line, yoTether);
+  graphNodes = [...document.querySelectorAll(".graph-node")];
+  graphLines = [...document.querySelectorAll("#graph-lines line[data-from]")];
+  node.addEventListener("click", () => selectNode(id));
+  positionGraph();
+  selectNode(id);
+  showToast(`${label.trim()} joined the graph.`);
 }
 
 function moveYo(id) {
@@ -145,7 +231,8 @@ async function generateScene() {
   }
 }
 
-graphNodes.forEach((node) => node.addEventListener("click", () => selectNode(node.dataset.id)));
+buildDynamicGraph();
+document.querySelector("#add-node-button").addEventListener("click", addDot);
 unwindButton.addEventListener("click", () => {
   graphMode = graphMode === "graph" ? "story" : "graph";
   graphCanvas.classList.toggle("story-mode", graphMode === "story");
