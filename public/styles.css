@@ -46,6 +46,9 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .project-kicker, .eyebrow { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.12em; }
 .mode-button { justify-self: end; min-height: 44px; border: 0; border-radius: 999px; background: var(--surface); color: var(--muted); padding: 0.65rem 1rem; cursor: pointer; }
 .mode-button[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
+.topbar-actions { display: flex; align-items: center; justify-content: end; gap: 1rem; }
+.about-link { color: var(--muted); font-size: 0.78rem; text-decoration: none; }
+.about-link:hover { color: var(--text); }
 
 .intro { padding: clamp(2rem, 5vw, 4.5rem) 0 clamp(2.25rem, 4vw, 3.75rem); }
 .intro h1 { margin: 0 0 1.2rem; max-width: none; white-space: nowrap; display: flex; align-items: center; gap: clamp(0.45rem, 1vw, 0.9rem); font: 500 clamp(3rem, 6.1vw, 5.75rem)/0.94 Georgia, "Times New Roman", serif; letter-spacing: -0.055em; }
@@ -420,6 +423,11 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .final-output h2 { margin: 0.4rem 0 0.7rem; font: 500 clamp(1.8rem, 3.2vw, 3rem)/1 Georgia, serif; }
 .final-output p:last-child { color: var(--muted); line-height: 1.45; }
 .final-output video { width: 100%; border-radius: 20px; background: #101311; }
+.about-section { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 2rem; margin-top: clamp(3rem, 8vw, 8rem); padding: clamp(1.25rem, 3vw, 2.5rem) 0; border-top: 1px solid #333b37; }
+.about-section h2 { margin: 0.45rem 0 0; font: 500 clamp(2rem, 4vw, 3.6rem)/1 Georgia, serif; }
+.about-copy { max-width: 760px; color: var(--muted); line-height: 1.55; }
+.about-copy p { margin: 0 0 1rem; }
+.about-copy .about-tools { color: var(--text); font-size: 0.88rem; }
 
 @media (max-width: 900px) {
   .first-principles-graph { height: 610px; }
@@ -432,6 +440,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .graph-stats-global { flex-wrap: wrap; gap: 0.5rem 0.85rem; }
   .character-card-body { grid-template-columns: 130px 130px 1fr; }
   .final-output { grid-template-columns: 1fr; }
+  .about-section { grid-template-columns: 1fr; gap: 1rem; }
 }
 
 @media (max-width: 560px) {
@@ -459,4 +468,6 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .graph-workspace > .game-stats .stat-item span { font-size: 0.5rem; }
   .character-card-body { grid-template-columns: 1fr 1fr; }
   .character-card-facts { grid-column: 1 / -1; }
+  .topbar-actions { gap: 0.55rem; }
+  .about-link { font-size: 0.7rem; }
 }

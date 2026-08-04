@@ -13,9 +13,7 @@
     <div class="app-shell">
       <header class="topbar">
         <a class="wordmark" href="#studio" aria-label="Videyo home"><img class="wordmark-image" src="/videyo-wordmark-dark.png" alt="Videyo" /></a>
-        <button class="mode-button" id="mode-button" type="button" aria-expanded="false">
-          Try live generation
-        </button>
+        <nav class="topbar-actions" aria-label="Primary"><a class="about-link" href="#about">About</a><button class="mode-button" id="mode-button" type="button" aria-expanded="false">Try live generation</button></nav>
       </header>
 
       <main id="studio">
@@ -111,6 +109,11 @@
         <section class="final-output" aria-labelledby="final-output-title">
           <div><p class="eyebrow">FINAL OUTPUT</p><h2 id="final-output-title">The full cut</h2><p>Watch the current Operation Midnight Snack build from start to finish.</p></div>
           <video src="/operation-midnight-snack/video.mp4" controls preload="metadata" poster="/operation-midnight-snack/final/white house opening.png" aria-label="Full Operation Midnight Snack video"></video>
+        </section>
+
+        <section class="about-section" id="about" aria-labelledby="about-title">
+          <div><p class="eyebrow">ABOUT VIDEYO</p><h2 id="about-title">Make a world with a friend.</h2></div>
+          <div class="about-copy"><p>Creatives think in clips, moments, characters, sounds, and possibilities. Making a video is a layered process. A look, a line, a location, and a feeling can connect across the whole story.</p><p>Most creative tools make you learn the software before you can follow the idea. Videyo is meant to feel different. You point Yo at what you see, and together you build a new world, universe, or story.</p><p>Yo keeps track of the threads, notices connections you might miss, and helps you shape the film as your ideas grow.</p><p class="about-tools">Built with Genblaze for traceable media generation and Backblaze B2 for the media behind the story. Bring your own provider key when you want to try live generation.</p></div>
         </section>
       </main>
     </div>
