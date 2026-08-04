@@ -165,7 +165,8 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .quest.active span, .quest.active small, .quest.complete span, .quest.complete small { color: rgb(24 32 28 / 0.7); }
 .yo-signal { position: absolute; left: 56%; top: 22%; width: 56px; aspect-ratio: 1; border-radius: 50%; background: var(--paper); color: var(--ink); display: grid; place-items: center; font-weight: 750; font-size: 1.15rem; box-shadow: var(--shadow); }
 
-.workspace { display: block; max-width: 1180px; margin: 0 auto; }
+.workspace { display: block; max-width: 1380px; margin: 0 auto; }
+.scene-workbench { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.7fr); gap: 1rem; }
 .scene-stage, .companion { min-width: 0; }
 .scene-stage { background: var(--surface); border-radius: var(--radius-lg); padding: clamp(1rem, 2vw, 1.6rem); }
 .stage-toolbar { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: 0.72rem; letter-spacing: 0.08em; padding-bottom: 1rem; }
@@ -178,6 +179,23 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .stage-media.is-loading .stage-sun { animation: pulse 1.2s ease-in-out infinite alternate; }
 .stage-media.is-loading .stage-land-one { transform: rotate(-4deg) translateX(3%); }
 .stage-actions { display: flex; align-items: center; gap: 0.75rem; padding-top: 1rem; }
+.transcript-panel { min-width: 0; min-height: 420px; border-radius: var(--radius-lg); background: var(--surface); padding: 1.4rem; overflow: hidden; }
+.transcript-heading { display: grid; gap: 0.35rem; padding-bottom: 1rem; border-bottom: 1px solid #303a34; }
+.transcript-heading span, .timeline-track-label { color: var(--muted); font-size: 0.66rem; letter-spacing: 0.12em; }
+.transcript-heading strong { font-size: 1rem; }
+.transcript-list { overflow: auto; max-height: 360px; }
+.transcript-line { display: block; width: 100%; padding: 0.85rem 0; border: 0; border-bottom: 1px solid #303a34; background: transparent; color: var(--text); text-align: left; cursor: pointer; }
+.transcript-line span { color: var(--muted); font-size: 0.66rem; }
+.transcript-line strong { display: block; margin-top: 0.35rem; color: var(--mint); font-size: 0.68rem; letter-spacing: 0.08em; }
+.transcript-line p { margin: 0.35rem 0 0; color: #c3cac5; line-height: 1.35; }
+.transcript-line.active { background: rgb(130 229 208 / 0.08); padding-inline: 0.65rem; border-radius: 10px; }
+.media-timeline { grid-column: 1 / -1; border-radius: 18px; background: var(--surface); padding: 1rem 1.2rem; }
+.media-track { display: grid; grid-template-columns: 76px 1fr; align-items: center; gap: 0.8rem; margin-top: 0.55rem; }
+.track-name { color: var(--muted); font-size: 0.62rem; letter-spacing: 0.1em; }
+.media-track > div { position: relative; height: 18px; border-radius: 6px; background: #101311; overflow: hidden; }
+.media-track i { position: absolute; left: var(--start); width: var(--width); top: 3px; height: 12px; border-radius: 4px; background: var(--mint); }
+.media-track i.dialogue { background: var(--coral); }
+.media-track i.music { background: var(--sun); opacity: 0.8; }
 .primary-action, .quiet-action { min-height: 48px; border: 0; border-radius: 999px; padding: 0 1.2rem; cursor: pointer; transition: transform var(--fast), opacity var(--fast); }
 .primary-action { background: var(--lime); color: var(--ink); font-weight: 700; }
 .quiet-action { background: transparent; color: var(--muted); }
@@ -212,7 +230,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 @keyframes pulse { from { transform: scale(0.96); } to { transform: scale(1.04); } }
 
 @media (max-width: 900px) {
-  .workspace { grid-template-columns: 1fr; }
+  .scene-workbench { grid-template-columns: 1fr; }
   .world-map { height: 310px; }
   .production-record { grid-template-columns: 1fr; }
   .production-record dl { grid-template-columns: repeat(2, 1fr); }
@@ -221,6 +239,8 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .quest-number { grid-column: 1 / -1; }
   .character-sheet { grid-template-columns: 110px 1fr; }
   .character-portrait { width: 105px; }
+  .transcript-panel { min-height: 0; }
+  .transcript-list { max-height: 260px; }
   .quest-gem-shelf { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 

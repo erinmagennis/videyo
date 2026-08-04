@@ -162,6 +162,7 @@ function selectNode(id) {
   yoThread.innerHTML = `<p>${note}</p>`;
   const scene = node.dataset.scene || ({ mira: "03", iris: "05", shore: "03", mirror: "06", turn: "06", city: "07", return: "09" }[id] || "06");
   document.querySelector("#selected-label").textContent = `SCENE ${scene} · ${node.querySelector("strong").textContent.toUpperCase()}`;
+  document.querySelector("#transcript-scene").textContent = `${scene} · ${node.querySelector("strong").textContent.toUpperCase()}`;
   document.querySelector("#stage-prompt").textContent = note;
   persistProject();
   moveYo(id);
@@ -314,6 +315,11 @@ document.querySelectorAll(".unlock-gem").forEach((gem) => gem.addEventListener("
   status.textContent = unlocked ? "UNLOCKED" : "ADD THOUGHT";
   showToast(unlocked ? `${gem.querySelector("strong").textContent} added to your collection.` : "Quest returned to the clarity map.");
   persistProject();
+}));
+document.querySelectorAll(".transcript-line").forEach((line) => line.addEventListener("click", () => {
+  document.querySelectorAll(".transcript-line").forEach((item) => item.classList.toggle("active", item === line));
+  document.querySelector("#stage-status").textContent = `PLAYHEAD ${line.dataset.time}`;
+  showToast(`Playhead moved to ${line.dataset.time}.`);
 }));
 window.addEventListener("resize", () => { updateLines(); moveYo(selectedNode); });
 
