@@ -50,11 +50,11 @@ def normalize_prompt(raw_prompt: object) -> str:
     return prompt
 
 
-def live_is_configured() -> bool:
+def live_is_configured(api_key: str | None = None) -> bool:
     required = ("B2_KEY_ID", "B2_APP_KEY", "B2_BUCKET", "B2_REGION", "OPENAI_API_KEY")
     return os.getenv("VIDEYO_LIVE_GENERATION", "false").lower() == "true" and all(
-        os.getenv(name) for name in required
-    )
+        os.getenv(name) for name in required[:-1]
+    ) and bool(api_key or os.getenv("OPENAI_API_KEY"))
 
 
 def run_demo(raw_prompt: object) -> PipelineResponse:
@@ -88,10 +88,10 @@ def run_demo(raw_prompt: object) -> PipelineResponse:
     )
 
 
-def run_live(raw_prompt: object) -> PipelineResponse:
+def run_live(raw_prompt: object, provider: str | None = None, api_key: str | None = None) -> PipelineResponse:
     prompt = normalize_prompt(raw_prompt)
-    if not live_is_configured():
-        raise RuntimeError("Live generation is not configured. Use demonstration mode.")
+    if not live_is_configured(api_key):
+        raise RuntimeError("Live setup is not configured yet. Check the provider connection and try again.")
 
     backend = S3StorageBackend.for_backblaze(os.environ["B2_BUCKET"])
     storage = ObjectStorageSink(
@@ -102,7 +102,7 @@ def run_live(raw_prompt: object) -> PipelineResponse:
     result = (
         Pipeline("videyo-image-production")
         .step(
-            DalleProvider(),
+            DalleProvider(api_key=api_key),
             model="gpt-image-1.5",
             prompt=prompt,
             modality=Modality.IMAGE,

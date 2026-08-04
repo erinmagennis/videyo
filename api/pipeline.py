@@ -18,7 +18,7 @@ def app(environ, start_response):
         mode = payload.get("mode", "demo")
         if mode not in {"demo", "live"}:
             raise ValueError("Mode must be demo or live.")
-        result = run_live(payload.get("prompt")) if mode == "live" else run_demo(payload.get("prompt"))
+        result = run_live(payload.get("prompt"), provider=payload.get("provider"), api_key=payload.get("providerKey")) if mode == "live" else run_demo(payload.get("prompt"))
         return _respond(start_response, "200 OK", {"ok": True, "result": result.to_dict()})
     except (ValueError, json.JSONDecodeError) as exc:
         return _respond(start_response, "400 Bad Request", {"ok": False, "error": str(exc)})

@@ -25,7 +25,7 @@
         <section class="graph-workspace" id="graph-workspace" aria-labelledby="graph-title">
           <div class="graph-heading"><div><p class="eyebrow">KNOWLEDGE GRAPH</p><h2 id="graph-title">yo, what belongs together?</h2></div><button class="quiet-action graph-add-button" id="add-node-button" type="button">+ Add clip</button></div>
           <p class="view-note">Characters are the anchors. Relationships carry the note. Loose clips orbit the person or idea they already point toward.</p>
-          <section class="game-stats" aria-label="Story progress">
+          <section class="game-stats graph-stats-global" aria-label="Story progress">
             <button class="stat-item stat-characters" data-stat="characters" type="button"><span>CHARACTERS</span><strong id="stat-characters">1 / 4</strong></button>
             <button class="stat-item stat-scenes" data-stat="scenes" type="button"><span>SCENES</span><strong id="stat-scenes">4 / 11</strong></button>
             <button class="stat-item stat-relationships" data-stat="relationships" type="button"><span>RELATIONSHIPS</span><strong id="stat-relationships">3 / 9</strong></button>
@@ -37,19 +37,18 @@
             <div class="relationship-label relationship-boss-squeak" data-relation="boss-squeak"><strong>Boss trusts Squeak's intel</strong><small>SCENE 03 · THE DUMPSTER SENATE</small></div>
             <div class="relationship-label relationship-boss-med" data-relation="boss-med"><strong>Boss needs Med's fix</strong><small>SCENE 08 · THE CLINIC</small></div>
             <div class="relationship-label relationship-squeak-guard" data-relation="squeak-guard"><strong>Squeak spots the weak point</strong><small>SCENE 02 · THE BOUNCER</small></div>
-            <button class="graph-node character first-node boss-node active" data-id="boss" data-type="Character" data-scenes="03,06,07,10" data-progress="80" type="button"><span class="node-orb">B</span><strong>Boss</strong><small>80% developed · 4 scenes</small></button>
-            <button class="graph-node character first-node squeak-node" data-id="squeak" data-type="Character" data-scenes="03,05,07,10" data-progress="64" type="button"><span class="node-orb">S</span><strong>Squeak</strong><small>64% developed · 4 scenes</small></button>
-            <button class="graph-node character first-node med-node" data-id="med" data-type="Character" data-scenes="08" data-progress="42" type="button"><span class="node-orb">M</span><strong>Dr. Med</strong><small>42% developed · 1 scene</small></button>
-            <button class="graph-node character first-node guard-node" data-id="guard" data-type="Character" data-scenes="02,11" data-progress="28" type="button"><span class="node-orb">G</span><strong>Guard</strong><small>28% developed · 2 scenes</small></button>
+            <button class="graph-node character first-node boss-node active" data-id="boss" data-type="Character" data-scenes="03,06,07,10" data-progress="80" type="button"><span class="node-orb"><img src="/operation-midnight-snack/thumbs/boss.jpg" alt="Boss" /></span><strong>Boss</strong><small>80% developed · 4 scenes</small></button>
+            <button class="graph-node character first-node squeak-node" data-id="squeak" data-type="Character" data-scenes="03,05,07,10" data-progress="64" type="button"><span class="node-orb"><img src="/operation-midnight-snack/thumbs/squeak.jpg" alt="Squeak" /></span><strong>Squeak</strong><small>64% developed · 4 scenes</small></button>
+            <button class="graph-node character first-node med-node" data-id="med" data-type="Character" data-scenes="08" data-progress="42" type="button"><span class="node-orb"><img src="/operation-midnight-snack/thumbs/med.jpg" alt="Dr. Med" /></span><strong>Dr. Med</strong><small>42% developed · 1 scene</small></button>
+            <button class="graph-node character first-node guard-node" data-id="guard" data-type="Character" data-scenes="02,11" data-progress="28" type="button"><span class="node-orb"><img src="/operation-midnight-snack/thumbs/guard.jpg" alt="Guard" /></span><strong>Guard</strong><small>28% developed · 2 scenes</small></button>
             <button class="clip-node clip-opening unplaced-clip" data-id="clip-opening" data-type="Clip" data-scenes="01" data-focus="" type="button"><span class="clip-thumb white-house-thumb"></span><strong>White House opening</strong><small>VIDEO · UNPLACED CLIP</small></button>
             <button class="clip-node clip-boss" data-id="clip-boss" data-type="Clip" data-scenes="03" data-focus="boss" type="button"><span class="clip-thumb boss-thumb"></span><strong>Boss v2</strong><small>IMAGE · CHARACTER</small></button>
             <button class="clip-node clip-squeak" data-id="clip-squeak" data-type="Clip" data-scenes="05" data-focus="squeak" type="button"><span class="clip-thumb diner-thumb"></span><strong>Ozempic reveal</strong><small>AUDIO · SCENE 05</small></button>
             <button class="clip-node clip-med" data-id="clip-med" data-type="Clip" data-scenes="08" data-focus="med" type="button"><span class="clip-thumb med-thumb"></span><strong>White coat note</strong><small>IMAGE · CHARACTER</small></button>
             <button class="clip-node clip-guard" data-id="clip-guard" data-type="Clip" data-scenes="02" data-focus="guard" type="button"><span class="clip-thumb guard-thumb"></span><strong>The bouncer</strong><small>VIDEO · SCENE 02</small></button>
-            <aside class="yo-floater" id="yo-floater" aria-labelledby="yo-title"><div class="yo-floater-head"><img class="yo-image yo-avatar" src="/videyo-mark-crop.png" alt="Yo" /><p id="yo-title">Looking at Boss</p></div><div class="yo-thread" id="yo-thread"><p>Boss runs the dumpster senate. Squeak brings the bad news. Their relationship is the story engine.</p></div><form class="yo-form" id="yo-form"><label for="yo-input">Comment on this</label><div class="yo-input-row"><input id="yo-input" name="message" type="text" maxlength="180" placeholder="What should Yo notice?" /><button type="submit" aria-label="Ask Yo">Ask</button></div></form></aside>
+            <aside class="yo-floater" id="yo-floater" aria-labelledby="yo-title"><div class="yo-floater-head"><img class="yo-image yo-avatar" src="/videyo-mark-crop.png" alt="Yo" /><p id="yo-title">Looking at Boss</p></div><div class="yo-thread" id="yo-thread"><p>Should Boss show more authority in scene 03? That could make his turn with Squeak feel sharper.</p><p class="yo-context">Yo suggestion · Boss · scene 03</p></div><form class="yo-form" id="yo-form"><label for="yo-input">Add a thought</label><div class="yo-input-row"><input id="yo-input" name="message" type="text" maxlength="180" placeholder="What should we consider?" /><button type="submit" aria-label="Ask Yo">Ask</button></div></form></aside>
           </div>
           <aside class="character-card" id="character-card" aria-live="polite" hidden></aside>
-          <div class="graph-legend"><span><i class="legend-character"></i>Character</span><span><i class="legend-clip"></i>Loose clip</span><span>Relationship notes sit on the line.</span></div>
         </section>
 
         <section class="unwind-section" id="unwind-section" aria-labelledby="unwind-title">
@@ -96,14 +95,14 @@
 
         <section class="production-record" aria-labelledby="record-title">
           <div>
-            <p class="eyebrow" id="record-title">PRODUCTION RECORD</p>
-            <strong id="record-summary">No new run yet</strong>
+            <p class="eyebrow" id="record-title">BUILD DETAILS</p>
+            <strong id="record-summary">Ready to make a version</strong>
           </div>
           <dl>
-            <div><dt>Provider</dt><dd id="record-provider">Demonstration</dd></div>
-            <div><dt>Asset hash</dt><dd id="record-asset">Pending</dd></div>
-            <div><dt>Manifest</dt><dd id="record-manifest">Pending</dd></div>
-            <div><dt>Storage</dt><dd id="record-storage">B2 on live runs</dd></div>
+            <div><dt>Source</dt><dd id="record-provider">Demo preview</dd></div>
+            <div><dt>Version</dt><dd id="record-asset">Not generated</dd></div>
+            <div><dt>Proof</dt><dd id="record-manifest">Appears after a run</dd></div>
+            <div><dt>Files</dt><dd id="record-storage">No folder connected</dd></div>
           </dl>
         </section>
 

@@ -12,12 +12,20 @@ const toast = document.querySelector("#toast");
 let selectedId = "boss";
 let selectedScene = "03";
 let liveMode = false;
+let liveConfig = { provider: null, apiKey: null, files: [] };
 
 const characters = {
   boss: { label: "Boss", note: "Boss runs the dumpster senate. He turns a food shortage into a black-ops plan.", scenes: ["03", "06", "07", "10"], progress: 80 },
   squeak: { label: "Squeak", note: "Squeak brings the bad news and spots the clue nobody else wants to say out loud.", scenes: ["03", "05", "07", "10"], progress: 64 },
   med: { label: "Dr. Med", note: "Dr. Med is the scientist behind the appetite fix. The white coat makes that read faster.", scenes: ["08"], progress: 42 },
   guard: { label: "Guard", note: "The human guard is the first weak point in the raccoons' plan.", scenes: ["02", "11"], progress: 28 },
+};
+
+const yoConversations = {
+  boss: "Should Boss show more authority in scene 03? That could make his turn with Squeak feel sharper.",
+  squeak: "Should we plant Squeak’s clue earlier? I can trace it back to the diner without giving away the reveal.",
+  med: "Could Dr. Med read as a scientist sooner? The white coat may make the clinic reveal clearer.",
+  guard: "Is the guard a real obstacle yet? We could give him one beat that makes the raid feel riskier.",
 };
 
 const scenes = [
@@ -38,16 +46,30 @@ const relationshipLines = [
   ["boss", "squeak", 4], ["boss", "med", 2], ["squeak", "guard", 2],
 ];
 
+const transcriptData = {
+  "01": [[0, "YO", "A breaking-news emergency opens over the White House."], [5, "NEWS", "Something is wrong with Washington's trash." ]],
+  "02": [[14, "GUARD", "Keep moving. Nothing to see here."], [20, "SQUEAK", "That door is our way in." ]],
+  "03": [[35, "BOSS", "Order! Order in the dumpster!"], [43, "SQUEAK", "The district's food supply has suffered a total systemic collapse."], [59, "SQUEAK · WHISPER", "It's... Ozempic."], [80, "YO · CONTEXT", "This is the gap that opens the Operation Midnight Snack quest."]],
+  "04": [[47, "SQUEAK", "The diner is empty."], [52, "BOSS", "Then we find out why." ]],
+  "05": [[58, "SQUEAK", "Ozempic."], [64, "BOSS", "Say that again." ]],
+  "06": [[68, "BOSS", "We stop waiting. We take the route under the clinic."], [73, "SQUEAK", "Operation Midnight Snack." ]],
+  "07": [[76, "SQUEAK", "Masks on."], [80, "BOSS", "Nobody gets left behind." ]],
+  "08": [[84, "MED", "The sign says clinic."], [88, "BOSS", "Then we found the target." ]],
+  "09": [[91, "SQUEAK", "Rooftop clear."], [94, "BOSS", "Drop." ]],
+  "10": [[97, "BOSS", "Load the water gun."], [101, "SQUEAK", "The vent is open." ]],
+  "11": [[103, "GUARD", "Did you hear that?"], [105, "YO", "The story keeps moving through the walls." ]],
+};
+
 const clipLines = [
   ["boss", "clip-boss", 3], ["squeak", "clip-squeak", 2],
   ["med", "clip-med", 2], ["guard", "clip-guard", 2],
 ];
 
 const characterAssets = {
-  boss: { current: "/operation-midnight-snack/final/boss.png", previous: "/operation-midnight-snack/v1/boss v1.png", wants: "Keep the colony fed", fears: "The trash bins stay empty" },
-  squeak: { current: "/operation-midnight-snack/final/squeak.png", previous: "/operation-midnight-snack/final/squeak.png", wants: "Find the clue", fears: "Being ignored" },
-  med: { current: "/operation-midnight-snack/final/med.png", previous: "/operation-midnight-snack/v1/med v1.png", wants: "Make the fix work", fears: "The clinic gets found" },
-  guard: { current: "/operation-midnight-snack/final/guard.png", previous: "/operation-midnight-snack/final/guard.png", wants: "Protect the door", fears: "Missing the signal" },
+  boss: { current: "/operation-midnight-snack/final/boss.png", previous: "/operation-midnight-snack/v1/boss v1.png", wants: "Keep the colony fed", fears: "The trash bins stay empty", changes: "From senate leader to black-ops commander" },
+  squeak: { current: "/operation-midnight-snack/final/squeak.png", previous: "/operation-midnight-snack/final/squeak.png", wants: "Find the clue", fears: "Being ignored", changes: "From rookie messenger to sharp-eyed scout" },
+  med: { current: "/operation-midnight-snack/final/med.png", previous: "/operation-midnight-snack/v1/med v1.png", wants: "Make the fix work", fears: "The clinic gets found", changes: "From scientist to part of the plan" },
+  guard: { current: "/operation-midnight-snack/final/guard.png", previous: "/operation-midnight-snack/final/guard.png", wants: "Protect the door", fears: "Missing the signal", changes: "From obstacle to accidental accomplice" },
 };
 
 function buildRelationshipLines() {
@@ -111,7 +133,7 @@ function selectNode(id, sceneId = null) {
   node.classList.add("active");
   document.querySelectorAll(`.clip-node[data-focus="${id}"]`).forEach((item) => item.classList.add("active"));
   yoTitle.textContent = `Looking at ${character.label}`;
-  yoThread.innerHTML = `<p>${character.note}</p><p class="yo-context">${character.scenes.length} connected scenes · ${character.progress}% developed</p>`;
+  yoThread.innerHTML = `<p>${yoConversations[id]}</p><p class="yo-context">Yo suggestion · ${character.label} · scene ${character.scenes[0]}</p>`;
   renderCharacterCard(id);
   const targetScene = sceneId || (character.scenes.includes(selectedScene) ? selectedScene : character.scenes[0]);
   selectScene(targetScene, false);
@@ -124,7 +146,7 @@ function renderCharacterCard(id) {
   const assets = characterAssets[id];
   if (!card || !character || !assets) return;
   card.hidden = false;
-  card.innerHTML = `<button class="character-card-close" type="button" aria-label="Close character card">×</button><div class="character-card-heading"><div><span class="eyebrow">CHARACTER CARD</span><h3>${character.label}</h3></div><strong>${character.progress}% developed</strong></div><div class="character-card-body"><div class="character-card-image"><img src="${assets.current}" alt="Current ${character.label} design" /><span>CURRENT</span></div><div class="character-card-image previous"><img src="${assets.previous}" alt="Previous ${character.label} design" /><span>PREVIOUS VERSION</span></div><div class="character-card-facts"><p><small>WANTS</small><strong>${assets.wants}</strong></p><p><small>FEARS</small><strong>${assets.fears}</strong></p><p><small>CONNECTED SCENES</small><strong>${character.scenes.join(" · ")}</strong></p></div></div>`;
+  card.innerHTML = `<button class="character-card-close" type="button" aria-label="Close character card">×</button><div class="character-card-heading"><div><span class="eyebrow">CHARACTER CARD</span><h3>${character.label}</h3></div><strong>${character.progress}% developed</strong></div><p class="character-card-note">${character.note}</p><div class="character-card-body"><div class="character-card-image"><img src="${assets.current}" alt="Current ${character.label} design" /><span>CURRENT VERSION</span></div><div class="character-card-image previous"><img src="${assets.previous}" alt="Previous ${character.label} design" /><span>PREVIOUS VERSION</span></div><div class="character-card-facts"><p><small>WANTS</small><strong>${assets.wants}</strong></p><p><small>FEARS</small><strong>${assets.fears}</strong></p><p><small>CHANGES</small><strong>${assets.changes}</strong></p><p><small>CONNECTED SCENES</small><strong>${character.scenes.join(" · ")}</strong></p></div></div>`;
   card.querySelector(".character-card-close").addEventListener("click", () => { card.hidden = true; });
 }
 
@@ -149,12 +171,40 @@ function selectScene(id, scroll = true) {
   document.querySelector("#transcript-scene").textContent = `${scene.id} · ${scene.title.toUpperCase()}`;
   document.querySelector("#stage-prompt").textContent = scene.note;
   document.querySelector("#stage-status").textContent = `SCENE ${scene.id} READY`;
+  renderTranscript(scene.id);
   if (stageVideo) {
     stageVideo.style.display = "block";
     stageVideo.currentTime = scene.start;
   }
   if (stageMedia) stageMedia.style.backgroundImage = "none";
   if (scroll) document.querySelector("#workspace").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function seekVideo(time) {
+  if (!stageVideo) return;
+  const move = () => {
+    stageVideo.currentTime = Math.max(0, Math.min(Number(time), stageVideo.duration || Number(time)));
+    stageVideo.play().catch(() => {});
+  };
+  if (stageVideo.readyState >= 1) move();
+  else stageVideo.addEventListener("loadedmetadata", move, { once: true });
+}
+
+function renderTranscript(sceneId) {
+  const list = document.querySelector("#transcript-list");
+  if (!list) return;
+  const rows = transcriptData[sceneId] || [];
+  list.innerHTML = rows.map(([time, speaker, text], index) => `<button class="transcript-line${index === 0 ? " active" : ""}" data-time="${time}" type="button"><span>${formatTime(time)}</span><strong>${speaker}</strong><p>${text}</p></button>`).join("");
+  list.querySelectorAll(".transcript-line").forEach((line) => line.addEventListener("click", () => {
+    list.querySelectorAll(".transcript-line").forEach((item) => item.classList.toggle("active", item === line));
+    document.querySelector("#stage-status").textContent = `PLAYHEAD ${formatTime(line.dataset.time)}`;
+    seekVideo(line.dataset.time);
+  }));
+}
+
+function formatTime(seconds) {
+  const value = Number(seconds);
+  return `${String(Math.floor(value / 60)).padStart(2, "0")}:${String(value % 60).padStart(2, "0")}`;
 }
 
 function renderTimeline() {
@@ -208,7 +258,7 @@ async function generateScene() {
   document.querySelector("#stage-status").textContent = "GENBLAZE RUNNING";
   stageMedia.classList.add("is-loading");
   try {
-    const response = await fetch("/api/pipeline", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ prompt: `${prompt} Preserve Boss, Squeak, the dumpster senate, and the Operation Midnight Snack tone.`, mode: liveMode ? "live" : "demo" }) });
+    const response = await fetch("/api/pipeline", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ prompt: `${prompt} Preserve Boss, Squeak, the dumpster senate, and the Operation Midnight Snack tone.`, mode: liveMode ? "live" : "demo", provider: liveConfig.provider, providerKey: liveConfig.apiKey, content: liveConfig.files }) });
     const payload = await response.json();
     if (!response.ok || !payload.ok) throw new Error(payload.error || "The pipeline did not complete.");
     const result = payload.result;
@@ -216,9 +266,9 @@ async function generateScene() {
     stageMedia.style.background = `url("${result.asset_url}") center / cover`;
     document.querySelector("#record-summary").textContent = `Scene ${selectedScene} · ${result.mode} run verified`;
     document.querySelector("#record-provider").textContent = `${result.provider} · ${result.model}`;
-    document.querySelector("#record-asset").textContent = shortHash(result.asset_sha256);
-    document.querySelector("#record-manifest").textContent = result.manifest_verified ? shortHash(result.manifest_hash) : "Verification failed";
-    document.querySelector("#record-storage").textContent = result.storage;
+    document.querySelector("#record-asset").textContent = "Version ready";
+    document.querySelector("#record-manifest").textContent = result.manifest_verified ? "Provenance attached" : "Needs review";
+    document.querySelector("#record-storage").textContent = liveConfig.files.length ? `${liveConfig.files.length} files connected` : "No folder connected";
     document.querySelector("#stage-status").textContent = "NEW VERSION READY";
     showToast("New version ready. The previous version is preserved.");
   } catch (error) { document.querySelector("#stage-status").textContent = "RUN STOPPED SAFELY"; showToast(error.message); }
@@ -232,7 +282,7 @@ document.querySelectorAll(".clip-node").forEach((clip) => clip.addEventListener(
 document.querySelectorAll(".relationship-label").forEach((label) => label.addEventListener("click", () => { const relation = label.dataset.relation.split("-"); selectNode(relation[0]); showToast(label.querySelector("strong").textContent); }));
 document.querySelector("#add-node-button").addEventListener("click", addClip);
 document.querySelector("#unwind-button")?.addEventListener("click", () => document.querySelector("#unwind-section").scrollIntoView({ behavior: "smooth", block: "start" }));
-document.querySelector("#yo-form").addEventListener("submit", (event) => { event.preventDefault(); const comment = yoInput.value.trim(); if (!comment) return; const user = document.createElement("p"); user.className = "user-comment"; user.textContent = comment; const reply = document.createElement("p"); reply.className = "yo-reply"; reply.textContent = `I’d carry that into ${characters[selectedId].label}'s next scene and keep it connected here.`; yoThread.append(user, reply); yoInput.value = ""; });
+document.querySelector("#yo-form").addEventListener("submit", (event) => { event.preventDefault(); const comment = yoInput.value.trim(); if (!comment) return; const user = document.createElement("p"); user.className = "user-comment"; user.textContent = comment; const reply = document.createElement("p"); reply.className = "yo-reply"; reply.textContent = `I’ll keep that in view for ${characters[selectedId].label} and the connected scenes.`; yoThread.append(user, reply); yoInput.value = ""; });
 const connectPanel = document.querySelector("#connect-panel");
 const connectForm = document.querySelector("#connect-form");
 const folderInput = document.querySelector("#content-folder");
@@ -240,11 +290,11 @@ const folderNote = document.querySelector("#connect-file-note");
 document.querySelector("#mode-button").addEventListener("click", () => { connectPanel.hidden = false; document.querySelector("#mode-button").setAttribute("aria-expanded", "true"); });
 document.querySelector("#connect-close").addEventListener("click", () => { connectPanel.hidden = true; document.querySelector("#mode-button").setAttribute("aria-expanded", "false"); });
 folderInput.addEventListener("change", () => { const count = folderInput.files?.length || 0; folderNote.textContent = count ? `${count} files ready for Yo to map.` : "No folder connected yet."; });
-connectForm.addEventListener("submit", (event) => { event.preventDefault(); const key = document.querySelector("#provider-key").value.trim(); const provider = document.querySelector("#provider-select").value; const count = folderInput.files?.length || 0; if (!key) { folderNote.textContent = "Add a key to connect this provider."; return; } liveMode = true; window.sessionStorage.setItem("videyo-live-provider", provider); document.querySelector("#mode-button").textContent = "Live setup ready"; document.querySelector("#mode-button").setAttribute("aria-expanded", "false"); connectPanel.hidden = true; showToast(`${provider.toUpperCase()} connected${count ? ` · ${count} files mapped` : ""}.`); });
+connectForm.addEventListener("submit", (event) => { event.preventDefault(); const key = document.querySelector("#provider-key").value.trim(); const provider = document.querySelector("#provider-select").value; const files = [...(folderInput.files || [])].map((file) => ({ name: file.name, type: file.type, size: file.size })); const count = files.length; if (!key) { folderNote.textContent = "Add a key to connect this provider."; return; } liveConfig = { provider, apiKey: key, files }; liveMode = true; document.querySelector("#mode-button").textContent = "Live setup ready"; document.querySelector("#mode-button").setAttribute("aria-expanded", "false"); connectPanel.hidden = true; showToast(`${provider.toUpperCase()} connected${count ? ` · ${count} files mapped` : ""}.`); });
 document.querySelector("#generate-button").addEventListener("click", generateScene);
 document.querySelector("#keep-button").addEventListener("click", () => showToast("Current version kept. The next scene is ready."));
 document.querySelectorAll(".stat-item").forEach((item) => item.addEventListener("click", () => highlightStat(item.dataset.stat)));
-document.querySelectorAll(".transcript-line").forEach((line) => line.addEventListener("click", () => { document.querySelectorAll(".transcript-line").forEach((item) => item.classList.toggle("active", item === line)); document.querySelector("#stage-status").textContent = `PLAYHEAD ${line.dataset.time}`; if (stageVideo) { stageVideo.currentTime = Number(line.dataset.time); stageVideo.play().catch(() => {}); } }));
 window.addEventListener("resize", updateLines);
 selectNode("boss", "03");
+renderTranscript("03");
 window.setTimeout(updateLines, 80);

@@ -51,6 +51,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .intro h1 { margin: 0 0 1.2rem; max-width: none; white-space: nowrap; display: flex; align-items: center; gap: clamp(0.45rem, 1vw, 0.9rem); font: 500 clamp(3rem, 6.1vw, 5.75rem)/0.94 Georgia, "Times New Roman", serif; letter-spacing: -0.055em; }
 .headline-yo { width: clamp(126px, 13vw, 198px); height: clamp(96px, 10vw, 148px); object-fit: contain; object-position: center; }
 .intro-copy { max-width: 670px; margin: 0; color: var(--muted); font-size: clamp(1rem, 1.4vw, 1.15rem); line-height: 1.55; }
+.intro-copy { max-width: none; white-space: nowrap; }
 
 .story-example { margin: 2rem 0 1.5rem; display: grid; grid-template-columns: minmax(150px, 0.35fr) minmax(0, 1.7fr); gap: 2rem; align-items: baseline; }
 .story-example p { color: var(--coral); font-size: 0.72rem; letter-spacing: 0.13em; }
@@ -99,7 +100,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .graph-node strong { font-size: 0.72rem; opacity: 0.78; }
 .graph-node small { color: var(--muted); font-size: 0.6rem; white-space: nowrap; opacity: 0.72; }
 .graph-node.active .node-orb { width: 30px; box-shadow: 0 0 0 7px rgb(214 255 85 / 0.14), 0 10px 28px rgb(0 0 0 / 0.3); border-color: var(--lime); }
-.yo-floater { position: absolute; width: min(270px, calc(100% - 2rem)); left: 0; top: 0; z-index: 3; border-radius: 20px; background: var(--paper); color: var(--ink); padding: 0.8rem; box-shadow: 0 20px 45px rgb(0 0 0 / 0.35); transition: left 420ms var(--ease), top 420ms var(--ease), transform 360ms var(--ease); }
+.yo-floater { position: absolute; width: min(270px, calc(100% - 2rem)); left: 0; top: 0; z-index: 20; border-radius: 20px; background: var(--paper); color: var(--ink); padding: 0.8rem; box-shadow: 0 20px 45px rgb(0 0 0 / 0.35); transition: left 420ms var(--ease), top 420ms var(--ease), transform 360ms var(--ease); }
 .yo-floater.context-change { transform: scale(1.035); }
 .quest-inspector { position: absolute; top: 6.8rem; right: 2.5rem; z-index: 8; width: min(340px, calc(100% - 3rem)); border: 1px solid rgb(214 255 85 / 0.55); border-radius: 22px; background: #202823; color: var(--text); padding: 1.2rem; box-shadow: 0 24px 70px rgb(0 0 0 / 0.44); }
 .quest-inspector[hidden] { display: none; }
@@ -325,6 +326,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .med-node { left: 72%; top: 72%; }
 .guard-node { left: 18%; top: 78%; }
 .graph-node.first-node.character .node-orb { width: 56px; height: 56px; font-size: 1.25rem; border: 0; }
+.graph-node.first-node.character .node-orb img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: center; }
 .first-node strong { font-size: 0.92rem; }
 .first-node small { font-size: 0.68rem; }
 .first-node.scene-linked, .clip-node.scene-linked { filter: drop-shadow(0 0 12px rgb(214 255 85 / 0.38)); }
@@ -345,12 +347,12 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .clip-squeak { left: 77%; top: 5%; }
 .clip-med { left: 77%; top: 50%; }
 .clip-guard { left: 2%; top: 88%; }
-.white-house-thumb { background-image: url("/operation-midnight-snack/final/white house opening.png") !important; }
-.boss-thumb { background-image: url("/operation-midnight-snack/final/boss.png") !important; }
-.diner-thumb { background-image: url("/operation-midnight-snack/final/joes diner.png") !important; }
-.med-thumb { background-image: url("/operation-midnight-snack/final/med.png") !important; }
-.guard-thumb { background-image: url("/operation-midnight-snack/final/guard.png") !important; }
-.vent-thumb { background-image: url("/operation-midnight-snack/final/vent.png") !important; }
+.white-house-thumb { background-image: url("/operation-midnight-snack/thumbs/white-house-opening.jpg") !important; }
+.boss-thumb { background-image: url("/operation-midnight-snack/thumbs/boss.jpg") !important; }
+.diner-thumb { background-image: url("/operation-midnight-snack/thumbs/joes-diner.jpg") !important; }
+.med-thumb { background-image: url("/operation-midnight-snack/thumbs/med.jpg") !important; }
+.guard-thumb { background-image: url("/operation-midnight-snack/thumbs/guard.jpg") !important; }
+.vent-thumb { background-image: url("/operation-midnight-snack/thumbs/vent.jpg") !important; }
 .legend-clip { background: var(--sun); }
 .yo-context { color: #68736c; font-size: 0.78rem; }
 .unwind-section { margin-top: clamp(3rem, 7vw, 6rem); padding: clamp(1.35rem, 3vw, 2.5rem); border-radius: 38px; background: var(--surface); box-shadow: var(--shadow); }
@@ -371,7 +373,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .timeline-character:hover { background: var(--sun); color: var(--ink); }
 .unwind-section + .workspace { margin-top: clamp(2.5rem, 5vw, 5rem); }
 
-.graph-workspace > .game-stats { display: flex; align-items: center; gap: 1.1rem; margin: 0 0 1.2rem; padding: 0 0 0.8rem; border-bottom: 1px solid rgb(247 244 237 / 0.12); }
+.graph-workspace > .game-stats { position: sticky; top: 0; z-index: 7; display: flex; align-items: center; gap: 1.1rem; margin: 0 0 1.2rem; padding: 0.55rem 0 0.8rem; border-bottom: 1px solid rgb(247 244 237 / 0.12); background: #181d1a; }
 .graph-workspace > .game-stats .stat-item { min-height: 0; display: inline-flex; align-items: baseline; gap: 0.35rem; padding: 0.2rem 0; border: 0; border-radius: 0; background: transparent; color: var(--muted); cursor: pointer; }
 .graph-workspace > .game-stats .stat-item span { font-size: 0.56rem; letter-spacing: 0.1em; }
 .graph-workspace > .game-stats .stat-item strong { font-size: 0.78rem; }
@@ -381,6 +383,19 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .graph-workspace > .game-stats .stat-relationships.active, .graph-workspace > .game-stats .stat-relationships:hover { color: var(--sun); }
 .graph-workspace > .game-stats .stat-quests.active, .graph-workspace > .game-stats .stat-quests:hover { color: var(--lime); }
 .graph-workspace > .game-stats .stat-story.active, .graph-workspace > .game-stats .stat-story:hover { color: var(--paper); }
+.graph-stats-global { display: flex; align-items: center; gap: 1.1rem; margin: 0; padding: 0.7rem clamp(1.25rem, 3vw, 2.5rem); border: 1px solid #252c28; border-bottom: 0; border-radius: 22px 22px 0 0; background: #101311; }
+.graph-stats-global .stat-item { min-height: 0; display: inline-flex; align-items: baseline; gap: 0.35rem; padding: 0.2rem 0; border: 0; border-radius: 0; background: transparent; color: var(--muted); cursor: pointer; }
+.graph-stats-global .stat-item span { font-size: 0.56rem; letter-spacing: 0.1em; }
+.graph-stats-global .stat-item strong { font-size: 0.78rem; }
+.graph-stats-global .stat-item:hover, .graph-stats-global .stat-item.active { color: var(--text); }
+.graph-stats-global .stat-characters.active, .graph-stats-global .stat-characters:hover { color: var(--coral); }
+.graph-stats-global .stat-scenes.active, .graph-stats-global .stat-scenes:hover { color: var(--mint); }
+.graph-stats-global .stat-relationships.active, .graph-stats-global .stat-relationships:hover { color: var(--sun); }
+.graph-stats-global .stat-quests.active, .graph-stats-global .stat-quests:hover { color: var(--lime); }
+.graph-stats-global .stat-story.active, .graph-stats-global .stat-story:hover { color: var(--paper); }
+.graph-workspace > .game-stats.graph-stats-global { position: static; margin: 1rem 0 0; padding: 0.7rem 1rem; border: 1px solid #252c28; border-bottom: 0; border-radius: 16px 16px 0 0; background: #101311; }
+.graph-workspace > .game-stats.graph-stats-global + .graph-canvas { margin-top: 0; border-radius: 0 0 28px 28px; }
+.graph-stats-global + .graph-workspace { border-radius: 0 0 38px 38px; }
 .graph-node.stat-dim, .clip-node.stat-dim { opacity: 0.24; }
 .graph-node.stat-highlight, .clip-node.stat-highlight { opacity: 1; }
 .unplaced-clip { border-style: dashed; opacity: 0.72; }
@@ -390,9 +405,10 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .character-card-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; padding-right: 1.5rem; }
 .character-card-heading h3 { margin: 0.3rem 0 0; font: 500 1.7rem Georgia, serif; }
 .character-card-heading > strong { color: var(--lime); font-size: 0.82rem; }
-.character-card-body { display: grid; grid-template-columns: 120px 120px 1fr; gap: 0.8rem; margin-top: 1rem; }
+.character-card-note { max-width: 760px; margin: 0.65rem 0 0; color: #c5cec8; line-height: 1.45; }
+.character-card-body { display: grid; grid-template-columns: 170px 170px 1fr; gap: 0.9rem; margin-top: 1rem; }
 .character-card-image { position: relative; min-height: 130px; overflow: hidden; border-radius: 13px; background: #151a17; }
-.character-card-image img { width: 100%; height: 100%; min-height: 130px; object-fit: cover; }
+.character-card-image img { display: block; width: 100%; height: auto; max-height: 260px; object-fit: contain; object-position: center; }
 .character-card-image span { position: absolute; left: 0.45rem; bottom: 0.4rem; color: var(--paper); font-size: 0.52rem; letter-spacing: 0.08em; }
 .character-card-image.previous { opacity: 0.62; filter: saturate(0.55); }
 .character-card-facts { display: grid; gap: 0.55rem; }
@@ -413,7 +429,8 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .clip-squeak, .clip-med { left: auto; right: 2%; }
   .unwind-heading { align-items: flex-start; flex-direction: column; gap: 0.7rem; }
   .graph-workspace > .game-stats { flex-wrap: wrap; gap: 0.5rem 0.85rem; }
-  .character-card-body { grid-template-columns: 100px 100px 1fr; }
+  .graph-stats-global { flex-wrap: wrap; gap: 0.5rem 0.85rem; }
+  .character-card-body { grid-template-columns: 130px 130px 1fr; }
   .final-output { grid-template-columns: 1fr; }
 }
 
@@ -435,6 +452,9 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
   .clip-guard { left: 2%; top: 89%; }
   .story-spine { margin-inline: -0.4rem; padding-inline: 0.4rem; }
   .view-note { white-space: normal; }
+  .intro-copy { white-space: normal; }
+  .graph-stats-global { gap: 0.35rem 0.65rem; }
+  .graph-stats-global .stat-item span { font-size: 0.5rem; }
   .graph-workspace > .game-stats { gap: 0.35rem 0.65rem; }
   .graph-workspace > .game-stats .stat-item span { font-size: 0.5rem; }
   .character-card-body { grid-template-columns: 1fr 1fr; }
