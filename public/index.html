@@ -11,8 +11,8 @@
     <div class="app-shell">
       <header class="topbar">
         <a class="wordmark" href="#studio" aria-label="Videyo home"><img class="wordmark-image" src="/videyo-wordmark-dark.png" alt="Videyo" /></a>
-        <button class="mode-button" id="mode-button" type="button" aria-pressed="false">
-          Demonstration mode
+        <button class="mode-button" id="mode-button" type="button" aria-expanded="false">
+          Try live generation
         </button>
       </header>
 
@@ -23,100 +23,40 @@
         </section>
 
         <section class="graph-workspace" id="graph-workspace" aria-labelledby="graph-title">
-          <div class="graph-heading">
-            <div><p class="eyebrow">LIVING STORY GRAPH</p><h2 id="graph-title">Every idea knows where it belongs.</h2></div>
-            <div class="graph-actions"><button class="quiet-action graph-add-button" id="add-node-button" type="button">+ Add dot</button><button class="unwind-button" id="unwind-button" type="button" aria-pressed="false">Unwind into story</button></div>
+          <div class="graph-heading"><div><p class="eyebrow">KNOWLEDGE GRAPH</p><h2 id="graph-title">yo, what belongs together?</h2></div><button class="quiet-action graph-add-button" id="add-node-button" type="button">+ Add clip</button></div>
+          <p class="view-note">Characters are the anchors. Relationships carry the note. Loose clips orbit the person or idea they already point toward.</p>
+          <section class="game-stats" aria-label="Story progress">
+            <button class="stat-item stat-characters" data-stat="characters" type="button"><span>CHARACTERS</span><strong id="stat-characters">1 / 4</strong></button>
+            <button class="stat-item stat-scenes" data-stat="scenes" type="button"><span>SCENES</span><strong id="stat-scenes">4 / 11</strong></button>
+            <button class="stat-item stat-relationships" data-stat="relationships" type="button"><span>RELATIONSHIPS</span><strong id="stat-relationships">3 / 9</strong></button>
+            <button class="stat-item stat-quests" data-stat="quests" type="button"><span>QUESTS</span><strong id="stat-quests">1 / 4</strong></button>
+            <button class="stat-item stat-story" data-stat="story" type="button"><span>STORY SHAPED</span><strong id="stat-percent">36%</strong></button>
+          </section>
+          <div class="graph-canvas first-principles-graph" id="graph-canvas">
+            <svg class="graph-lines" id="graph-lines" aria-hidden="true"><line class="yo-tether" id="yo-tether" /></svg>
+            <div class="relationship-label relationship-boss-squeak" data-relation="boss-squeak"><strong>Boss trusts Squeak's intel</strong><small>SCENE 03 · THE DUMPSTER SENATE</small></div>
+            <div class="relationship-label relationship-boss-med" data-relation="boss-med"><strong>Boss needs Med's fix</strong><small>SCENE 08 · THE CLINIC</small></div>
+            <div class="relationship-label relationship-squeak-guard" data-relation="squeak-guard"><strong>Squeak spots the weak point</strong><small>SCENE 02 · THE BOUNCER</small></div>
+            <button class="graph-node character first-node boss-node active" data-id="boss" data-type="Character" data-scenes="03,06,07,10" data-progress="80" type="button"><span class="node-orb">B</span><strong>Boss</strong><small>80% developed · 4 scenes</small></button>
+            <button class="graph-node character first-node squeak-node" data-id="squeak" data-type="Character" data-scenes="03,05,07,10" data-progress="64" type="button"><span class="node-orb">S</span><strong>Squeak</strong><small>64% developed · 4 scenes</small></button>
+            <button class="graph-node character first-node med-node" data-id="med" data-type="Character" data-scenes="08" data-progress="42" type="button"><span class="node-orb">M</span><strong>Dr. Med</strong><small>42% developed · 1 scene</small></button>
+            <button class="graph-node character first-node guard-node" data-id="guard" data-type="Character" data-scenes="02,11" data-progress="28" type="button"><span class="node-orb">G</span><strong>Guard</strong><small>28% developed · 2 scenes</small></button>
+            <button class="clip-node clip-opening unplaced-clip" data-id="clip-opening" data-type="Clip" data-scenes="01" data-focus="" type="button"><span class="clip-thumb white-house-thumb"></span><strong>White House opening</strong><small>VIDEO · UNPLACED CLIP</small></button>
+            <button class="clip-node clip-boss" data-id="clip-boss" data-type="Clip" data-scenes="03" data-focus="boss" type="button"><span class="clip-thumb boss-thumb"></span><strong>Boss v2</strong><small>IMAGE · CHARACTER</small></button>
+            <button class="clip-node clip-squeak" data-id="clip-squeak" data-type="Clip" data-scenes="05" data-focus="squeak" type="button"><span class="clip-thumb diner-thumb"></span><strong>Ozempic reveal</strong><small>AUDIO · SCENE 05</small></button>
+            <button class="clip-node clip-med" data-id="clip-med" data-type="Clip" data-scenes="08" data-focus="med" type="button"><span class="clip-thumb med-thumb"></span><strong>White coat note</strong><small>IMAGE · CHARACTER</small></button>
+            <button class="clip-node clip-guard" data-id="clip-guard" data-type="Clip" data-scenes="02" data-focus="guard" type="button"><span class="clip-thumb guard-thumb"></span><strong>The bouncer</strong><small>VIDEO · SCENE 02</small></button>
+            <aside class="yo-floater" id="yo-floater" aria-labelledby="yo-title"><div class="yo-floater-head"><img class="yo-image yo-avatar" src="/videyo-mark-crop.png" alt="Yo" /><p id="yo-title">Looking at Boss</p></div><div class="yo-thread" id="yo-thread"><p>Boss runs the dumpster senate. Squeak brings the bad news. Their relationship is the story engine.</p></div><form class="yo-form" id="yo-form"><label for="yo-input">Comment on this</label><div class="yo-input-row"><input id="yo-input" name="message" type="text" maxlength="180" placeholder="What should Yo notice?" /><button type="submit" aria-label="Ask Yo">Ask</button></div></form></aside>
           </div>
-
-          <div class="graph-canvas" id="graph-canvas">
-            <svg class="graph-lines" id="graph-lines" aria-hidden="true">
-              <line data-from="mira" data-to="iris" data-weight="4" />
-              <line data-from="mira" data-to="shore" data-weight="3" />
-              <line data-from="iris" data-to="mirror" data-weight="4" />
-              <line data-from="mirror" data-to="turn" data-weight="3" />
-              <line data-from="turn" data-to="city" data-weight="2" />
-              <line data-from="shore" data-to="turn" data-weight="2" />
-              <line data-from="city" data-to="return" data-weight="1" />
-              <line class="yo-tether" id="yo-tether" />
-              <path class="story-thread" d="M70 290 C280 90 510 320 780 170 C930 90 1040 185 1160 110" />
-            </svg>
-            <div class="story-timeline" id="story-timeline" aria-label="Story timeline"></div>
-
-            <button class="graph-node character mira active" data-id="mira" data-type="Character" data-graph-x="20" data-graph-y="36" data-story-x="8" data-story-y="62" type="button">
-              <span class="node-orb">B</span><strong>Boss</strong><small>Leader · 8 scenes</small>
-            </button>
-            <button class="graph-node character iris" data-id="iris" data-type="Character" data-graph-x="72" data-graph-y="24" data-story-x="28" data-story-y="38" type="button">
-              <span class="node-orb">S</span><strong>Squeak</strong><small>Rookie · 6 scenes</small>
-            </button>
-            <button class="graph-node location shore" data-id="shore" data-type="Location" data-graph-x="36" data-graph-y="73" data-story-x="46" data-story-y="68" type="button">
-              <span class="node-orb"></span><strong>Dumpster</strong><small>4 scenes</small>
-            </button>
-            <button class="graph-node idea mirror" data-id="mirror" data-type="Idea" data-graph-x="54" data-graph-y="45" data-story-x="60" data-story-y="37" type="button">
-              <span class="node-orb"></span><strong>Joe's Diner</strong><small>Clue · 4 links</small>
-            </button>
-            <button class="graph-node scene turn" data-id="turn" data-type="Scene" data-graph-x="69" data-graph-y="67" data-story-x="73" data-story-y="62" type="button">
-              <span class="node-orb">06</span><strong>Spa &amp; Clinic</strong><small>Current quest</small>
-            </button>
-            <button class="graph-node location city" data-id="city" data-type="Location" data-graph-x="87" data-graph-y="49" data-story-x="87" data-story-y="36" type="button">
-              <span class="node-orb"></span><strong>White House</strong><small>Opening · 2 scenes</small>
-            </button>
-            <button class="graph-node scene return" data-id="return" data-type="Scene" data-graph-x="88" data-graph-y="80" data-story-x="94" data-story-y="63" type="button">
-              <span class="node-orb">11</span><strong>The Vent</strong><small>Ending</small>
-            </button>
-
-            <aside class="yo-floater" id="yo-floater" aria-labelledby="yo-title">
-              <div class="yo-floater-head"><img class="yo-image yo-avatar" src="/videyo-mark-crop.png" alt="Yo" /><p id="yo-title">Looking at Boss</p></div>
-              <div class="yo-thread" id="yo-thread">
-                <p>Boss runs the dumpster senate. Squeak brings the bad news. The city's trash has gone dry.</p>
-              </div>
-              <form class="yo-form" id="yo-form">
-                <label for="yo-input">Comment on this</label>
-                <div class="yo-input-row">
-                  <input id="yo-input" name="message" type="text" maxlength="180" placeholder="What if she notices sooner?" />
-                  <button type="submit" aria-label="Ask Yo">Ask</button>
-                </div>
-              </form>
-            </aside>
-          </div>
-
-          <div class="graph-legend">
-            <span><i class="legend-character"></i>Character</span>
-            <span><i class="legend-location"></i>Location</span>
-            <span><i class="legend-idea"></i>Idea</span>
-            <span>Line weight shows how often they meet.</span>
-          </div>
+          <aside class="character-card" id="character-card" aria-live="polite" hidden></aside>
+          <div class="graph-legend"><span><i class="legend-character"></i>Character</span><span><i class="legend-clip"></i>Loose clip</span><span>Relationship notes sit on the line.</span></div>
         </section>
 
-        <section class="story-example" aria-label="Current story">
-          <p>OPERATION MIDNIGHT SNACK</p>
-          <strong>A shadow government of raccoons launches a black-ops raid when Washington's trash stops feeding them.</strong>
-        </section>
-
-        <section class="character-quest" aria-labelledby="character-title">
-          <div class="quest-number">QUEST 01</div>
-          <div class="character-intro">
-            <p class="eyebrow">CLARITY QUEST · CHARACTER</p>
-            <h2 id="character-title">Refine Boss</h2>
-            <p>Boss runs the dumpster senate. Give him one detail that makes him feel in charge.</p>
-          </div>
-          <div class="character-sheet" data-commentable="Boss's character sheet">
-            <div class="character-portrait" aria-label="Boss character portrait"><img src="/operation-midnight-snack/final/boss.png" alt="Boss the raccoon" /></div>
-            <div class="character-facts">
-              <div><small>WANTS</small><strong>Keep the colony fed</strong></div>
-              <div><small>FEARS</small><strong>The trash bins stay empty</strong></div>
-              <div><small>CHANGES</small><strong>From leader to black-ops commander</strong></div>
-            </div>
-            <button class="quiet-action character-action" type="button">Ask Yo for a stronger Boss</button>
-          </div>
-          <div class="quest-gem-shelf" aria-label="Clarity quests">
-            <button class="unlock-gem unlocked" type="button" aria-pressed="true"><span class="gem-icon">✦</span><span><small>CHARACTER QUEST</small><strong>Refine Boss</strong></span><em>UNLOCKED</em></button>
-            <button class="unlock-gem" type="button" aria-pressed="false"><span class="gem-icon">◌</span><span><small>SCENE QUEST</small><strong>Create continuity</strong></span><em>ADD THOUGHT</em></button>
-            <button class="unlock-gem" type="button" aria-pressed="false"><span class="gem-icon">◇</span><span><small>CHARACTER QUEST</small><strong>Refine Dr. Med</strong></span><em>ADD THOUGHT</em></button>
-            <button class="unlock-gem" type="button" aria-pressed="false"><span class="gem-icon">✧</span><span><small>SCENE QUEST</small><strong>Strengthen opening</strong></span><em>ADD THOUGHT</em></button>
-          </div>
-        </section>
-
-        <section class="workspace" aria-label="Selected scene workspace">
+        <section class="unwind-section" id="unwind-section" aria-labelledby="unwind-title">
+          <div class="unwind-heading"><div><p class="eyebrow">UNWIND · STORY ORDER</p><h2 id="unwind-title">yo, what happens next?</h2></div><span class="unwind-meta">11 scenes · 3 acts · 1 living spine</span></div>
+          <p class="view-note">Scenes lead the way here. Characters, clips, and quests sit under the moment they change.</p>
+          <div class="story-spine" id="story-spine" aria-label="Operation Midnight Snack story timeline"></div>
+          <div class="workspace" id="workspace" aria-label="Selected scene workspace">
           <div class="scene-workbench">
           <div class="scene-stage" data-commentable="The turn scene">
             <div class="stage-toolbar">
@@ -151,6 +91,7 @@
             <div class="media-track"><span class="track-name">MUSIC</span><div><i class="music" style="--start: 4%; --width: 88%"></i></div></div>
           </div>
           </div>
+          </div>
         </section>
 
         <section class="production-record" aria-labelledby="record-title">
@@ -165,10 +106,31 @@
             <div><dt>Storage</dt><dd id="record-storage">B2 on live runs</dd></div>
           </dl>
         </section>
+
+        <section class="final-output" aria-labelledby="final-output-title">
+          <div><p class="eyebrow">FINAL OUTPUT</p><h2 id="final-output-title">The full cut</h2><p>Watch the current Operation Midnight Snack build from start to finish.</p></div>
+          <video src="/operation-midnight-snack/video.mp4" controls preload="metadata" poster="/operation-midnight-snack/final/white house opening.png" aria-label="Full Operation Midnight Snack video"></video>
+        </section>
       </main>
     </div>
 
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <aside class="connect-panel" id="connect-panel" aria-labelledby="connect-title" hidden>
+      <button class="connect-close" id="connect-close" type="button" aria-label="Close live setup">×</button>
+      <p class="eyebrow">LIVE SETUP</p>
+      <h2 id="connect-title">Bring your own tools</h2>
+      <p>Connect a provider and a folder. Yo will use them for this session only.</p>
+      <form id="connect-form">
+        <label for="provider-select">Provider</label>
+        <select id="provider-select"><option value="fal">FAL</option><option value="genblaze">Genblaze</option><option value="custom">Another provider</option></select>
+        <label for="provider-key">API key</label>
+        <input id="provider-key" type="password" autocomplete="off" placeholder="Paste your key" />
+        <label for="content-folder">Content folder</label>
+        <input id="content-folder" type="file" webkitdirectory directory multiple />
+        <p class="connect-file-note" id="connect-file-note">No folder connected yet.</p>
+        <button class="primary-action" type="submit">Connect for this session</button>
+      </form>
+    </aside>
     <script src="/app.js"></script>
   </body>
 </html>

@@ -1,329 +1,250 @@
-let graphNodes = [...document.querySelectorAll(".graph-node")];
 const graphCanvas = document.querySelector("#graph-canvas");
-let graphLines = [...document.querySelectorAll("#graph-lines line[data-from]")];
-const yoTether = document.querySelector("#yo-tether");
+const graphSvg = document.querySelector("#graph-lines");
 const yoFloater = document.querySelector("#yo-floater");
+const yoTether = document.querySelector("#yo-tether");
 const yoTitle = document.querySelector("#yo-title");
 const yoThread = document.querySelector("#yo-thread");
 const yoInput = document.querySelector("#yo-input");
+const storySpine = document.querySelector("#story-spine");
 const stageVideo = document.querySelector("#stage-video");
-const unwindButton = document.querySelector("#unwind-button");
-const storyTimeline = document.querySelector("#story-timeline");
+const stageMedia = document.querySelector("#stage-media");
 const toast = document.querySelector("#toast");
-let selectedNode = "mira";
-let graphMode = "graph";
+let selectedId = "boss";
+let selectedScene = "03";
 let liveMode = false;
-let graphAnimationFrame = null;
 
-const extraGraphNodes = [
-  ["scene-01", "White House", "Scene", 6, 10, 7, 18, "01", "Scene 01: A breaking-news emergency opens over the White House."],
-  ["scene-02", "The bouncer", "Scene", 17, 8, 17, 15, "02", "Scene 02: The camera walks toward a human bouncer, then pivots away."],
-  ["scene-03", "Dumpster senate", "Scene", 31, 14, 28, 20, "03", "Scene 03: Boss calls order inside the raccoon senate."],
-  ["scene-04", "Empty diner", "Scene", 7, 53, 35, 25, "04", "Scene 04: Joe's Diner is dark and the grease traps are empty."],
-  ["scene-05", "Ozempic", "Scene", 29, 58, 44, 30, "05", "Scene 05: Squeak names the mythical appetite killer."],
-  ["scene-06", "Policy change", "Scene", 37, 37, 56, 36, "06", "Scene 06: Boss changes policy and orders the raid."],
-  ["scene-07", "Suiting up", "Scene", 12, 70, 68, 43, "07", "Scene 07: The raccoons gear up with masks and a grappling hook."],
-  ["scene-08", "The clinic", "Scene", 30, 76, 80, 50, "08", "Scene 08: The hot-pink Spa & Clinic sign reveals the target."],
-  ["signal", "Food crisis", "Idea", 10, 18, 18, 26, "03", "The city's trash has gone dry."],
-  ["map", "D.C. map", "Idea", 42, 18, 38, 24, "04", "Crossed-out food landmarks show the crisis spreading."],
-  ["archive", "The dumpster", "Location", 10, 70, 18, 72, "03", "The dumpster is a senate, a bunker, and a home."],
-  ["reflection", "The prophecy", "Idea", 61, 20, 58, 28, "05", "The raccoons decide the carbs are vanishing."],
-  ["threshold", "The vent", "Scene", 82, 64, 82, 54, "10", "Boss loads the appetite stimulant into a water gun."],
-  ["undertow", "The alley", "Motif", 56, 78, 58, 80, "02", "The human world and raccoon world run beside each other."],
-  ["beacon", "The raid", "Location", 90, 22, 90, 22, "10", "The raid begins under the clinic."]
+const characters = {
+  boss: { label: "Boss", note: "Boss runs the dumpster senate. He turns a food shortage into a black-ops plan.", scenes: ["03", "06", "07", "10"], progress: 80 },
+  squeak: { label: "Squeak", note: "Squeak brings the bad news and spots the clue nobody else wants to say out loud.", scenes: ["03", "05", "07", "10"], progress: 64 },
+  med: { label: "Dr. Med", note: "Dr. Med is the scientist behind the appetite fix. The white coat makes that read faster.", scenes: ["08"], progress: 42 },
+  guard: { label: "Guard", note: "The human guard is the first weak point in the raccoons' plan.", scenes: ["02", "11"], progress: 28 },
+};
+
+const scenes = [
+  { id: "01", act: "01 · THE BAIT", title: "White House opening", chars: ["boss"], start: 0, progress: 52, thumb: "white-house-thumb", note: "A breaking-news emergency opens over the White House." },
+  { id: "02", act: "01 · THE BAIT", title: "The bouncer", chars: ["guard", "squeak"], start: 14, progress: 31, thumb: "guard-thumb", note: "A human guard becomes the first weak point." },
+  { id: "03", act: "01 · THE BAIT", title: "Dumpster senate", chars: ["boss", "squeak"], start: 35, progress: 78, thumb: "boss-thumb", note: "Boss calls order inside the dumpster senate." },
+  { id: "04", act: "01 · THE BAIT", title: "Empty diner", chars: ["squeak"], start: 47, progress: 39, thumb: "diner-thumb", note: "Joe's Diner is dark and the grease traps are empty." },
+  { id: "05", act: "02 · THE MYTH", title: "Ozempic reveal", chars: ["squeak"], start: 58, progress: 61, thumb: "diner-thumb", note: "Squeak names the mythical appetite killer." },
+  { id: "06", act: "02 · THE MYTH", title: "Policy change", chars: ["boss", "squeak"], start: 68, progress: 48, thumb: "boss-thumb", note: "Boss turns panic into Operation Midnight Snack." },
+  { id: "07", act: "03 · THE RAID", title: "Suiting up", chars: ["boss", "squeak"], start: 76, progress: 35, thumb: "boss-thumb", note: "The raccoons gear up with masks and a grappling hook." },
+  { id: "08", act: "03 · THE RAID", title: "The clinic", chars: ["med"], start: 84, progress: 42, thumb: "med-thumb", note: "The hot-pink Spa & Clinic sign reveals the target." },
+  { id: "09", act: "03 · THE RAID", title: "Rooftop drop", chars: ["boss"], start: 91, progress: 24, thumb: "boss-thumb", note: "The raid crosses from plan into motion." },
+  { id: "10", act: "03 · THE RAID", title: "The vent", chars: ["boss", "squeak"], start: 97, progress: 29, thumb: "vent-thumb", note: "Boss loads the appetite stimulant into a water gun." },
+  { id: "11", act: "03 · THE RAID", title: "Credits", chars: ["guard"], start: 103, progress: 18, thumb: "guard-thumb", note: "The human world catches up with the raccoons in the walls." },
 ];
 
-function buildDynamicGraph() {
-  const svg = document.querySelector("#graph-lines");
-  extraGraphNodes.forEach(([id, label, type, graphX, graphY, storyX, storyY, scene, note]) => {
-    const node = document.createElement("button");
-    const isScenePreview = id.startsWith("scene-");
-    node.className = `graph-node ${type.toLowerCase()}${isScenePreview ? " scene-preview" : ""}`;
-    node.dataset.id = id;
-    node.dataset.type = type;
-    node.dataset.graphX = graphX;
-    node.dataset.graphY = graphY;
-    node.dataset.storyX = storyX;
-    node.dataset.storyY = storyY;
-    node.dataset.scene = scene;
-    node.dataset.note = note;
-    node.type = "button";
-    node.innerHTML = isScenePreview
-      ? `<span class="node-orb"><i></i></span><strong>${scene}</strong><small>${label}</small>`
-      : `<span class="node-orb">·</span><strong>${label}</strong><small>${type} · Scene ${scene}</small>`;
-    graphCanvas.insertBefore(node, document.querySelector(".yo-floater"));
-  });
-  const edges = [
-    ["mira", "scene-01", 2], ["mira", "scene-02", 2], ["mira", "scene-03", 2], ["mira", "scene-04", 2],
-    ["mira", "scene-05", 2], ["mira", "scene-06", 3], ["mira", "scene-07", 2], ["mira", "scene-08", 2],
-    ["signal", "mira", 3], ["signal", "map", 2], ["map", "iris", 3], ["map", "mirror", 2],
-    ["archive", "shore", 2], ["archive", "reflection", 2], ["reflection", "iris", 3],
-    ["reflection", "threshold", 2], ["threshold", "turn", 3], ["threshold", "undertow", 2],
-    ["undertow", "shore", 2], ["undertow", "return", 2], ["beacon", "iris", 2], ["beacon", "return", 1]
-  ];
-  edges.forEach(([from, to, weight]) => {
+const relationshipLines = [
+  ["boss", "squeak", 4], ["boss", "med", 2], ["squeak", "guard", 2],
+];
+
+const clipLines = [
+  ["boss", "clip-boss", 3], ["squeak", "clip-squeak", 2],
+  ["med", "clip-med", 2], ["guard", "clip-guard", 2],
+];
+
+const characterAssets = {
+  boss: { current: "/operation-midnight-snack/final/boss.png", previous: "/operation-midnight-snack/v1/boss v1.png", wants: "Keep the colony fed", fears: "The trash bins stay empty" },
+  squeak: { current: "/operation-midnight-snack/final/squeak.png", previous: "/operation-midnight-snack/final/squeak.png", wants: "Find the clue", fears: "Being ignored" },
+  med: { current: "/operation-midnight-snack/final/med.png", previous: "/operation-midnight-snack/v1/med v1.png", wants: "Make the fix work", fears: "The clinic gets found" },
+  guard: { current: "/operation-midnight-snack/final/guard.png", previous: "/operation-midnight-snack/final/guard.png", wants: "Protect the door", fears: "Missing the signal" },
+};
+
+function buildRelationshipLines() {
+  [...relationshipLines, ...clipLines].forEach(([from, to, weight]) => {
     const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line.dataset.from = from;
     line.dataset.to = to;
     line.dataset.weight = weight;
-    svg.insertBefore(line, document.querySelector("#yo-tether"));
+    line.dataset.kind = to.startsWith("clip-") ? "clip" : "relationship";
+    graphSvg.insertBefore(line, yoTether);
   });
-  graphNodes = [...document.querySelectorAll(".graph-node")];
-  graphLines = [...document.querySelectorAll("#graph-lines line[data-from]")];
-  graphNodes.forEach((node) => node.addEventListener("click", () => selectNode(node.dataset.id)));
-}
-
-const nodeNotes = {
-  mira: "Boss runs the dumpster senate. His job is to keep the colony fed, whatever it takes.",
-  iris: "Squeak is the rookie who brings the bad news and says the word nobody wants to hear.",
-  shore: "The dumpster is the story's main room: senate chamber, bunker, and home.",
-  mirror: "Joe's Diner is the clue that shows the food crisis is real.",
-  turn: "This is where Boss turns panic into a plan: Operation Midnight Snack.",
-  city: "The White House opening sells a political thriller before the camera reveals the raccoons.",
-  return: "The vent raid carries the story into the credits with the raccoons inside the walls.",
-};
-
-function positionGraph() {
-  const story = graphMode === "story";
-  graphCanvas.classList.toggle("timeline-mode", story);
-  if (story) renderStoryTimeline();
-  graphNodes.forEach((node) => {
-    node.style.left = `${node.dataset[story ? "storyX" : "graphX"]}%`;
-    node.style.top = `${node.dataset[story ? "storyY" : "graphY"]}%`;
-  });
-  followMovingNodes(story ? 900 : 80);
-  window.setTimeout(() => moveYo(selectedNode), story ? 860 : 40);
-}
-
-function renderStoryTimeline() {
-  storyTimeline.innerHTML = `
-    <div class="timeline-overview"><div><span>STORY ARC</span><strong>Operation Midnight Snack</strong></div><span>MAIN SPINE · 3 ACTS · 11 SCENES</span></div>
-    <section class="timeline-chapter"><header><span class="timeline-kicker">ACT 01</span><strong>The Bait</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("01", "White House", "scene-01")}${timelineScene("02", "The bouncer", "scene-02")}${timelineScene("03", "Dumpster senate", "scene-03")}${timelineScene("04", "Empty diner", "scene-04")}</div></div></section>
-    <section class="timeline-chapter"><header><span class="timeline-kicker">ACT 02</span><strong>The Myth</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("05", "Ozempic", "scene-05")}${timelineScene("06", "Policy change", "scene-06")}</div></div><div class="timeline-branch"><span class="timeline-branch-label">BRANCH · CREATE CONTINUITY</span><div class="timeline-scenes">${timelineScene("V2", "Rectangular dumpster", "shore")}</div></div></section>
-    <section class="timeline-chapter"><header><span class="timeline-kicker">ACT 03</span><strong>The Raid</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("07", "Suiting up", "scene-07")}${timelineScene("08", "The clinic", "scene-08")}${timelineScene("09", "Rooftop drop", "scene-07")}${timelineScene("10", "The vent", "threshold")}${timelineScene("11", "Credits", "return")}</div></div></section>`;
-  storyTimeline.querySelectorAll(".timeline-scene").forEach((scene) => scene.addEventListener("click", () => selectNode(scene.dataset.node)));
-}
-
-function timelineScene(number, label, node) {
-  return `<button class="timeline-scene${selectedNode === node ? " active" : ""}" data-node="${node}" type="button"><span>SCENE ${number}</span><strong>${label}</strong></button>`;
-}
-
-function followMovingNodes(duration) {
-  if (graphAnimationFrame !== null) window.cancelAnimationFrame(graphAnimationFrame);
-  const startedAt = performance.now();
-  function drawFrame(now) {
-    updateLines();
-    if (now - startedAt < duration) {
-      graphAnimationFrame = window.requestAnimationFrame(drawFrame);
-    } else {
-      graphAnimationFrame = null;
-      updateLines();
-    }
-  }
-  graphAnimationFrame = window.requestAnimationFrame(drawFrame);
 }
 
 function updateLines() {
-  const canvasBox = graphCanvas.getBoundingClientRect();
-  graphLines.forEach((line) => {
-    const from = document.querySelector(`[data-id="${line.dataset.from}"] .node-orb`).getBoundingClientRect();
-    const to = document.querySelector(`[data-id="${line.dataset.to}"] .node-orb`).getBoundingClientRect();
-    line.setAttribute("x1", from.left + from.width / 2 - canvasBox.left);
-    line.setAttribute("y1", from.top + from.height / 2 - canvasBox.top);
-    line.setAttribute("x2", to.left + to.width / 2 - canvasBox.left);
-    line.setAttribute("y2", to.top + to.height / 2 - canvasBox.top);
+  if (!graphCanvas) return;
+  const bounds = graphCanvas.getBoundingClientRect();
+  graphSvg.setAttribute("viewBox", `0 0 ${bounds.width} ${bounds.height}`);
+  graphSvg.setAttribute("preserveAspectRatio", "none");
+  graphSvg.querySelectorAll("line[data-from]").forEach((line) => {
+    const from = document.querySelector(`[data-id="${line.dataset.from}"] .node-orb, [data-id="${line.dataset.from}"] .clip-thumb`);
+    const to = document.querySelector(`[data-id="${line.dataset.to}"] .node-orb, [data-id="${line.dataset.to}"] .clip-thumb`);
+    if (!from || !to) return;
+    const a = from.getBoundingClientRect();
+    const b = to.getBoundingClientRect();
+    line.setAttribute("x1", a.left + a.width / 2 - bounds.left);
+    line.setAttribute("y1", a.top + a.height / 2 - bounds.top);
+    line.setAttribute("x2", b.left + b.width / 2 - bounds.left);
+    line.setAttribute("y2", b.top + b.height / 2 - bounds.top);
   });
-  updateYoPosition(canvasBox);
+  positionYo(bounds);
 }
 
-function updateYoPosition(canvasBox = graphCanvas.getBoundingClientRect()) {
-  const orb = document.querySelector(`[data-id="${selectedNode}"] .node-orb`).getBoundingClientRect();
-  const nodeX = orb.left + orb.width / 2 - canvasBox.left;
-  const nodeY = orb.top + orb.height / 2 - canvasBox.top;
-  const chatWidth = yoFloater.offsetWidth;
-  const chatHeight = yoFloater.offsetHeight;
-  const placeRight = nodeX < canvasBox.width * 0.55;
-  const left = Math.max(16, Math.min(canvasBox.width - chatWidth - 16, placeRight ? nodeX + 82 : nodeX - chatWidth - 82));
-  const top = Math.max(16, Math.min(canvasBox.height - chatHeight - 16, nodeY - chatHeight / 2));
+function positionYo(bounds = graphCanvas.getBoundingClientRect()) {
+  const orb = document.querySelector(`[data-id="${selectedId}"] .node-orb`);
+  if (!orb || !yoFloater) return;
+  const point = orb.getBoundingClientRect();
+  const x = point.left + point.width / 2 - bounds.left;
+  const y = point.top + point.height / 2 - bounds.top;
+  const right = x < bounds.width * 0.52;
+  const left = Math.max(16, Math.min(bounds.width - yoFloater.offsetWidth - 16, right ? x + 72 : x - yoFloater.offsetWidth - 72));
+  const top = Math.max(16, Math.min(bounds.height - yoFloater.offsetHeight - 16, y - yoFloater.offsetHeight / 2));
   yoFloater.style.left = `${left}px`;
   yoFloater.style.top = `${top}px`;
-  yoTether.setAttribute("x1", nodeX);
-  yoTether.setAttribute("y1", nodeY);
-  yoTether.setAttribute("x2", placeRight ? left : left + chatWidth);
-  yoTether.setAttribute("y2", top + Math.min(72, chatHeight / 2));
+  yoTether.setAttribute("x1", x);
+  yoTether.setAttribute("y1", y);
+  yoTether.setAttribute("x2", right ? left : left + yoFloater.offsetWidth);
+  yoTether.setAttribute("y2", top + 38);
 }
 
-function selectNode(id) {
+function sceneFor(id) {
+  const scene = scenes.find((item) => item.id === id);
+  return scene || scenes.find((item) => item.chars.includes(id)) || scenes[2];
+}
+
+function selectNode(id, sceneId = null) {
   const node = document.querySelector(`[data-id="${id}"]`);
-  if (!node) return;
-  selectedNode = id;
-  graphNodes.forEach((item) => item.classList.toggle("active", item === node));
-  yoTitle.textContent = `Looking at ${node.querySelector("strong").textContent}`;
-  const note = nodeNotes[id] || node.dataset.note || "This dot is part of the living story. Ask Yo what it changes next.";
-  yoThread.innerHTML = `<p>${note}</p>`;
-  const scene = node.dataset.scene || ({ mira: "03", iris: "05", shore: "03", mirror: "06", turn: "06", city: "07", return: "09" }[id] || "06");
-  document.querySelector("#selected-label").textContent = `SCENE ${scene} · ${node.querySelector("strong").textContent.toUpperCase()}`;
-  document.querySelector("#transcript-scene").textContent = `${scene} · ${node.querySelector("strong").textContent.toUpperCase()}`;
-  document.querySelector("#stage-prompt").textContent = note;
-  persistProject();
-  moveYo(id);
+  const character = characters[id];
+  if (!node || !character) return;
+  selectedId = id;
+  document.querySelectorAll(".graph-node, .clip-node, .relationship-label").forEach((item) => item.classList.remove("active"));
+  node.classList.add("active");
+  document.querySelectorAll(`.clip-node[data-focus="${id}"]`).forEach((item) => item.classList.add("active"));
+  yoTitle.textContent = `Looking at ${character.label}`;
+  yoThread.innerHTML = `<p>${character.note}</p><p class="yo-context">${character.scenes.length} connected scenes · ${character.progress}% developed</p>`;
+  renderCharacterCard(id);
+  const targetScene = sceneId || (character.scenes.includes(selectedScene) ? selectedScene : character.scenes[0]);
+  selectScene(targetScene, false);
+  positionYo();
 }
 
-function persistProject() {
-  const state = { selectedNode, graphMode, nodes: graphNodes.map((node) => ({ id: node.dataset.id, label: node.querySelector("strong").textContent, type: node.dataset.type })) };
-  window.localStorage.setItem("videyo-project", JSON.stringify(state));
+function renderCharacterCard(id) {
+  const card = document.querySelector("#character-card");
+  const character = characters[id];
+  const assets = characterAssets[id];
+  if (!card || !character || !assets) return;
+  card.hidden = false;
+  card.innerHTML = `<button class="character-card-close" type="button" aria-label="Close character card">×</button><div class="character-card-heading"><div><span class="eyebrow">CHARACTER CARD</span><h3>${character.label}</h3></div><strong>${character.progress}% developed</strong></div><div class="character-card-body"><div class="character-card-image"><img src="${assets.current}" alt="Current ${character.label} design" /><span>CURRENT</span></div><div class="character-card-image previous"><img src="${assets.previous}" alt="Previous ${character.label} design" /><span>PREVIOUS VERSION</span></div><div class="character-card-facts"><p><small>WANTS</small><strong>${assets.wants}</strong></p><p><small>FEARS</small><strong>${assets.fears}</strong></p><p><small>CONNECTED SCENES</small><strong>${character.scenes.join(" · ")}</strong></p></div></div>`;
+  card.querySelector(".character-card-close").addEventListener("click", () => { card.hidden = true; });
 }
 
-function addDot() {
-  const label = window.prompt("Name this idea, character, scene, or place:", "New idea");
-  if (!label || !label.trim()) return;
-  const id = `custom-${Date.now()}`;
-  const node = document.createElement("button");
-  node.className = "graph-node idea";
-  node.dataset.id = id;
-  node.dataset.type = "Idea";
-  node.dataset.graphX = 48 + Math.round(Math.random() * 18);
-  node.dataset.graphY = 32 + Math.round(Math.random() * 34);
-  node.dataset.storyX = 50 + Math.round(Math.random() * 20);
-  node.dataset.storyY = 44 + Math.round(Math.random() * 28);
-  node.dataset.scene = "new";
-  node.dataset.note = `${label.trim()} is now part of the story world. Ask Yo where it belongs.`;
-  node.type = "button";
-  node.innerHTML = `<span class="node-orb">·</span><strong>${label.trim()}</strong><small>Idea · new thread</small>`;
-  graphCanvas.insertBefore(node, yoFloater);
-  const nearest = graphNodes.find((item) => item.dataset.id === selectedNode) || graphNodes[0];
+function highlightStat(stat) {
+  document.querySelectorAll(".stat-item").forEach((item) => item.classList.toggle("active", item.dataset.stat === stat));
+  document.querySelectorAll(".graph-node.character, .clip-node").forEach((item) => {
+    const isCharacter = item.classList.contains("character");
+    const isClip = item.classList.contains("clip-node");
+    const isScene = item.dataset.scenes?.includes(selectedScene);
+    const match = stat === "characters" ? isCharacter : stat === "scenes" ? isScene : stat === "relationships" ? isCharacter && item.dataset.id !== "guard" : stat === "story" ? true : isCharacter;
+    item.classList.toggle("stat-highlight", match);
+    item.classList.toggle("stat-dim", !match);
+  });
+}
+
+function selectScene(id, scroll = true) {
+  const scene = sceneFor(id);
+  selectedScene = scene.id;
+  document.querySelectorAll(".timeline-scene").forEach((item) => item.classList.toggle("active", item.dataset.scene === scene.id));
+  document.querySelectorAll(".graph-node, .clip-node").forEach((item) => item.classList.toggle("scene-linked", item.dataset.scenes?.split(",").includes(scene.id)));
+  document.querySelector("#selected-label").textContent = `${scene.title.toUpperCase()} · SCENE ${scene.id}`;
+  document.querySelector("#transcript-scene").textContent = `${scene.id} · ${scene.title.toUpperCase()}`;
+  document.querySelector("#stage-prompt").textContent = scene.note;
+  document.querySelector("#stage-status").textContent = `SCENE ${scene.id} READY`;
+  if (stageVideo) {
+    stageVideo.style.display = "block";
+    stageVideo.currentTime = scene.start;
+  }
+  if (stageMedia) stageMedia.style.backgroundImage = "none";
+  if (scroll) document.querySelector("#workspace").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderTimeline() {
+  let currentAct = "";
+  storySpine.innerHTML = scenes.map((scene) => {
+    const act = scene.act !== currentAct ? `<div class="timeline-act"><span>${scene.act}</span></div>` : "";
+    currentAct = scene.act;
+    const tags = scene.chars.map((id) => `<span class="timeline-character" data-character="${id}" role="button" tabindex="0">${characters[id].label}</span>`).join("");
+    return `${act}<button class="timeline-scene${scene.id === selectedScene ? " active" : ""}" data-scene="${scene.id}" type="button"><span class="timeline-thumb ${scene.thumb}"></span><span class="timeline-scene-number">SCENE ${scene.id}</span><strong>${scene.title}</strong><small>${scene.progress}% clear</small><i style="--progress:${scene.progress}%"></i><span class="timeline-tags">${tags}</span></button>`;
+  }).join("");
+  storySpine.querySelectorAll(".timeline-scene").forEach((item) => item.addEventListener("click", (event) => { if (!event.target.closest(".timeline-character")) selectScene(item.dataset.scene); }));
+  storySpine.querySelectorAll(".timeline-character").forEach((item) => item.addEventListener("click", (event) => { event.stopPropagation(); selectNode(item.dataset.character, item.closest(".timeline-scene").dataset.scene); }));
+}
+
+function addClip() {
+  const label = window.prompt("Name this clip or note:", "New clip");
+  if (!label?.trim()) return;
+  const clip = document.createElement("button");
+  clip.className = "clip-node custom-clip active";
+  clip.dataset.id = `custom-${Date.now()}`;
+  clip.dataset.focus = selectedId;
+  clip.dataset.scenes = selectedScene;
+  clip.type = "button";
+  clip.innerHTML = `<span class="clip-thumb"></span><strong>${label.trim()}</strong><small>NEW CLIP · ${characters[selectedId].label.toUpperCase()}</small>`;
+  graphCanvas.insertBefore(clip, yoFloater);
   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-  line.dataset.from = id;
-  line.dataset.to = nearest.dataset.id;
+  line.dataset.from = selectedId;
+  line.dataset.to = clip.dataset.id;
   line.dataset.weight = "2";
-  document.querySelector("#graph-lines").insertBefore(line, yoTether);
-  graphNodes = [...document.querySelectorAll(".graph-node")];
-  graphLines = [...document.querySelectorAll("#graph-lines line[data-from]")];
-  node.addEventListener("click", () => selectNode(id));
-  positionGraph();
-  selectNode(id);
-  showToast(`${label.trim()} joined the graph.`);
-}
-
-function moveYo(id) {
-  const node = document.querySelector(`[data-id="${id}"]`);
-  if (!node) return;
-  updateYoPosition();
-  yoFloater.classList.add("context-change");
-  window.setTimeout(() => yoFloater.classList.remove("context-change"), 360);
+  line.dataset.kind = "clip";
+  graphSvg.insertBefore(line, yoTether);
+  clip.addEventListener("click", () => selectNode(selectedId, selectedScene));
+  updateLines();
+  showToast(`${label.trim()} orbiting ${characters[selectedId].label}.`);
 }
 
 function showToast(message) {
+  if (!toast) return;
   toast.textContent = message;
   toast.classList.add("show");
-  window.setTimeout(() => toast.classList.remove("show"), 3200);
+  window.setTimeout(() => toast.classList.remove("show"), 2800);
 }
 
-function shortHash(value) {
-  if (!value || value.length < 16) return value || "Pending";
-  return `${value.slice(0, 8)}…${value.slice(-6)}`;
-}
+function shortHash(value) { return value && value.length > 16 ? `${value.slice(0, 8)}…${value.slice(-6)}` : value || "Pending"; }
 
 async function generateScene() {
   const button = document.querySelector("#generate-button");
-  const stage = document.querySelector("#stage-media");
   const prompt = document.querySelector("#stage-prompt").textContent;
   button.disabled = true;
   button.textContent = "Building this version";
-  stage.classList.add("is-loading");
   document.querySelector("#stage-status").textContent = "GENBLAZE RUNNING";
-
+  stageMedia.classList.add("is-loading");
   try {
-    const response = await fetch("/api/pipeline", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ prompt: `${prompt} Preserve Boss, Squeak, the dumpster senate, and the Operation Midnight Snack tone.`, mode: liveMode ? "live" : "demo" }),
-    });
+    const response = await fetch("/api/pipeline", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ prompt: `${prompt} Preserve Boss, Squeak, the dumpster senate, and the Operation Midnight Snack tone.`, mode: liveMode ? "live" : "demo" }) });
     const payload = await response.json();
     if (!response.ok || !payload.ok) throw new Error(payload.error || "The pipeline did not complete.");
     const result = payload.result;
     stageVideo.style.display = "none";
-    stage.style.backgroundImage = `url("${result.asset_url}")`;
-    stage.style.backgroundSize = "cover";
-    stage.style.backgroundPosition = "center";
-    document.querySelector("#record-summary").textContent = `The turn · ${result.mode} run verified`;
+    stageMedia.style.background = `url("${result.asset_url}") center / cover`;
+    document.querySelector("#record-summary").textContent = `Scene ${selectedScene} · ${result.mode} run verified`;
     document.querySelector("#record-provider").textContent = `${result.provider} · ${result.model}`;
     document.querySelector("#record-asset").textContent = shortHash(result.asset_sha256);
     document.querySelector("#record-manifest").textContent = result.manifest_verified ? shortHash(result.manifest_hash) : "Verification failed";
     document.querySelector("#record-storage").textContent = result.storage;
     document.querySelector("#stage-status").textContent = "NEW VERSION READY";
     showToast("New version ready. The previous version is preserved.");
-  } catch (error) {
-    document.querySelector("#stage-status").textContent = "RUN STOPPED SAFELY";
-    showToast(error.message);
-  } finally {
-    button.disabled = false;
-    button.textContent = "Regenerate this scene";
-    stage.classList.remove("is-loading");
-  }
+  } catch (error) { document.querySelector("#stage-status").textContent = "RUN STOPPED SAFELY"; showToast(error.message); }
+  finally { button.disabled = false; button.textContent = "Regenerate this scene"; stageMedia.classList.remove("is-loading"); }
 }
 
-buildDynamicGraph();
-document.querySelector("#add-node-button").addEventListener("click", addDot);
-unwindButton.addEventListener("click", () => {
-  graphMode = graphMode === "graph" ? "story" : "graph";
-  graphCanvas.classList.toggle("story-mode", graphMode === "story");
-  unwindButton.setAttribute("aria-pressed", String(graphMode === "story"));
-  unwindButton.textContent = graphMode === "story" ? "Return to knowledge graph" : "Unwind into story";
-  positionGraph();
-});
-
-document.querySelectorAll("[data-focus]").forEach((button) => button.addEventListener("click", () => {
-  document.querySelector("#graph-workspace").scrollIntoView({ behavior: "smooth", block: "center" });
-  selectNode(button.dataset.focus);
-}));
-
-document.querySelectorAll("[data-commentable]").forEach((item) => item.addEventListener("click", () => {
-  const isCharacter = item.classList.contains("character-sheet");
-  selectNode(isCharacter ? "mira" : "turn");
-  yoTitle.textContent = `Looking at ${item.dataset.commentable}`;
-  yoInput.focus();
-}));
-
-document.querySelector("#yo-form").addEventListener("submit", (event) => {
-  event.preventDefault();
-  const comment = yoInput.value.trim();
-  if (!comment) return;
-  const user = document.createElement("p");
-  user.className = "user-comment";
-  user.textContent = comment;
-  const reply = document.createElement("p");
-  reply.className = "yo-reply";
-  reply.textContent = `I’m with you. That changes ${document.querySelector(`[data-id="${selectedNode}"] strong`).textContent} and connects to the mirror choice. I’d carry it into the next scene, then compare both versions.`;
-  yoThread.append(user, reply);
-  yoThread.scrollTop = yoThread.scrollHeight;
-  yoInput.value = "";
-});
-
-document.querySelector("#mode-button").addEventListener("click", (event) => {
-  liveMode = !liveMode;
-  event.currentTarget.setAttribute("aria-pressed", String(liveMode));
-  event.currentTarget.textContent = liveMode ? "Live generation" : "Demonstration mode";
-  showToast(liveMode ? "Live mode uses configured paid services." : "Demonstration mode makes no paid calls.");
-});
-
+buildRelationshipLines();
+renderTimeline();
+document.querySelectorAll(".graph-node").forEach((node) => node.addEventListener("click", () => selectNode(node.dataset.id)));
+document.querySelectorAll(".clip-node").forEach((clip) => clip.addEventListener("click", () => clip.dataset.focus ? selectNode(clip.dataset.focus, clip.dataset.scenes?.split(",")[0]) : selectScene(clip.dataset.scenes?.split(",")[0])));
+document.querySelectorAll(".relationship-label").forEach((label) => label.addEventListener("click", () => { const relation = label.dataset.relation.split("-"); selectNode(relation[0]); showToast(label.querySelector("strong").textContent); }));
+document.querySelector("#add-node-button").addEventListener("click", addClip);
+document.querySelector("#unwind-button")?.addEventListener("click", () => document.querySelector("#unwind-section").scrollIntoView({ behavior: "smooth", block: "start" }));
+document.querySelector("#yo-form").addEventListener("submit", (event) => { event.preventDefault(); const comment = yoInput.value.trim(); if (!comment) return; const user = document.createElement("p"); user.className = "user-comment"; user.textContent = comment; const reply = document.createElement("p"); reply.className = "yo-reply"; reply.textContent = `I’d carry that into ${characters[selectedId].label}'s next scene and keep it connected here.`; yoThread.append(user, reply); yoInput.value = ""; });
+const connectPanel = document.querySelector("#connect-panel");
+const connectForm = document.querySelector("#connect-form");
+const folderInput = document.querySelector("#content-folder");
+const folderNote = document.querySelector("#connect-file-note");
+document.querySelector("#mode-button").addEventListener("click", () => { connectPanel.hidden = false; document.querySelector("#mode-button").setAttribute("aria-expanded", "true"); });
+document.querySelector("#connect-close").addEventListener("click", () => { connectPanel.hidden = true; document.querySelector("#mode-button").setAttribute("aria-expanded", "false"); });
+folderInput.addEventListener("change", () => { const count = folderInput.files?.length || 0; folderNote.textContent = count ? `${count} files ready for Yo to map.` : "No folder connected yet."; });
+connectForm.addEventListener("submit", (event) => { event.preventDefault(); const key = document.querySelector("#provider-key").value.trim(); const provider = document.querySelector("#provider-select").value; const count = folderInput.files?.length || 0; if (!key) { folderNote.textContent = "Add a key to connect this provider."; return; } liveMode = true; window.sessionStorage.setItem("videyo-live-provider", provider); document.querySelector("#mode-button").textContent = "Live setup ready"; document.querySelector("#mode-button").setAttribute("aria-expanded", "false"); connectPanel.hidden = true; showToast(`${provider.toUpperCase()} connected${count ? ` · ${count} files mapped` : ""}.`); });
 document.querySelector("#generate-button").addEventListener("click", generateScene);
-document.querySelector("#keep-button").addEventListener("click", () => showToast("Current version kept. The next scene is ready when you are."));
-document.querySelector(".character-action").addEventListener("click", () => selectNode("mira"));
-document.querySelectorAll(".unlock-gem").forEach((gem) => gem.addEventListener("click", () => {
-  const unlocked = gem.classList.toggle("unlocked");
-  gem.setAttribute("aria-pressed", String(unlocked));
-  const status = gem.querySelector("em");
-  status.textContent = unlocked ? "UNLOCKED" : "ADD THOUGHT";
-  showToast(unlocked ? `${gem.querySelector("strong").textContent} added to your collection.` : "Quest returned to the clarity map.");
-  persistProject();
-}));
-document.querySelectorAll(".transcript-line").forEach((line) => line.addEventListener("click", () => {
-  document.querySelectorAll(".transcript-line").forEach((item) => item.classList.toggle("active", item === line));
-  document.querySelector("#stage-status").textContent = `PLAYHEAD ${line.dataset.time}`;
-  showToast(`Playhead moved to ${line.dataset.time}.`);
-}));
-window.addEventListener("resize", () => { updateLines(); moveYo(selectedNode); });
-
-positionGraph();
-selectNode(selectedNode);
+document.querySelector("#keep-button").addEventListener("click", () => showToast("Current version kept. The next scene is ready."));
+document.querySelectorAll(".stat-item").forEach((item) => item.addEventListener("click", () => highlightStat(item.dataset.stat)));
+document.querySelectorAll(".transcript-line").forEach((line) => line.addEventListener("click", () => { document.querySelectorAll(".transcript-line").forEach((item) => item.classList.toggle("active", item === line)); document.querySelector("#stage-status").textContent = `PLAYHEAD ${line.dataset.time}`; if (stageVideo) { stageVideo.currentTime = Number(line.dataset.time); stageVideo.play().catch(() => {}); } }));
+window.addEventListener("resize", updateLines);
+selectNode("boss", "03");
+window.setTimeout(updateLines, 80);
