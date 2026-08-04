@@ -6,6 +6,7 @@ const yoFloater = document.querySelector("#yo-floater");
 const yoTitle = document.querySelector("#yo-title");
 const yoThread = document.querySelector("#yo-thread");
 const yoInput = document.querySelector("#yo-input");
+const stageVideo = document.querySelector("#stage-video");
 const unwindButton = document.querySelector("#unwind-button");
 const storyTimeline = document.querySelector("#story-timeline");
 const toast = document.querySelector("#toast");
@@ -15,21 +16,21 @@ let liveMode = false;
 let graphAnimationFrame = null;
 
 const extraGraphNodes = [
-  ["scene-01", "Signal", "Scene", 6, 10, 7, 18, "01", "Scene 01: Mira finds the signal under the glass horizon."],
-  ["scene-02", "The map", "Scene", 17, 8, 17, 15, "02", "Scene 02: The map redraws itself while Mira is watching."],
-  ["scene-03", "Glass shore", "Scene", 31, 14, 28, 20, "03", "Scene 03: Iris appears at the Glass Shore."],
-  ["scene-04", "Archive", "Scene", 7, 53, 35, 25, "04", "Scene 04: Mira finds the first record of the other world."],
-  ["scene-05", "Reflection", "Scene", 29, 58, 44, 30, "05", "Scene 05: A reflection becomes evidence instead of a warning."],
-  ["scene-06", "The turn", "Scene", 37, 37, 56, 36, "06", "Scene 06: Mira and Iris disagree about which world is real."],
-  ["scene-07", "City below", "Scene", 12, 70, 68, 43, "07", "Scene 07: The City Below opens beneath the ocean."],
-  ["scene-08", "Return", "Scene", 30, 76, 80, 50, "08", "Scene 08: The signal returns with a different meaning."],
-  ["signal", "Signal", "Idea", 10, 18, 18, 26, "01", "The signal arrives before Mira understands what it wants."],
-  ["map", "The map", "Idea", 42, 18, 38, 24, "02", "The map redraws itself when Iris enters the frame."],
-  ["archive", "Archive room", "Location", 10, 70, 18, 72, "04", "The archive holds the first record of the other world."],
-  ["reflection", "Reflection", "Idea", 61, 20, 58, 28, "05", "A reflection becomes evidence instead of a warning."],
-  ["threshold", "The threshold", "Scene", 82, 64, 82, 54, "07", "Mira chooses which world gets to continue."],
-  ["undertow", "Undertow", "Motif", 56, 78, 58, 80, "08", "The ocean keeps the memory of every discarded version."],
-  ["beacon", "Beacon field", "Location", 90, 22, 90, 22, "09", "The final signal points back to the beginning."]
+  ["scene-01", "White House", "Scene", 6, 10, 7, 18, "01", "Scene 01: A breaking-news emergency opens over the White House."],
+  ["scene-02", "The bouncer", "Scene", 17, 8, 17, 15, "02", "Scene 02: The camera walks toward a human bouncer, then pivots away."],
+  ["scene-03", "Dumpster senate", "Scene", 31, 14, 28, 20, "03", "Scene 03: Boss calls order inside the raccoon senate."],
+  ["scene-04", "Empty diner", "Scene", 7, 53, 35, 25, "04", "Scene 04: Joe's Diner is dark and the grease traps are empty."],
+  ["scene-05", "Ozempic", "Scene", 29, 58, 44, 30, "05", "Scene 05: Squeak names the mythical appetite killer."],
+  ["scene-06", "Policy change", "Scene", 37, 37, 56, 36, "06", "Scene 06: Boss changes policy and orders the raid."],
+  ["scene-07", "Suiting up", "Scene", 12, 70, 68, 43, "07", "Scene 07: The raccoons gear up with masks and a grappling hook."],
+  ["scene-08", "The clinic", "Scene", 30, 76, 80, 50, "08", "Scene 08: The hot-pink Spa & Clinic sign reveals the target."],
+  ["signal", "Food crisis", "Idea", 10, 18, 18, 26, "03", "The city's trash has gone dry."],
+  ["map", "D.C. map", "Idea", 42, 18, 38, 24, "04", "Crossed-out food landmarks show the crisis spreading."],
+  ["archive", "The dumpster", "Location", 10, 70, 18, 72, "03", "The dumpster is a senate, a bunker, and a home."],
+  ["reflection", "The prophecy", "Idea", 61, 20, 58, 28, "05", "The raccoons decide the carbs are vanishing."],
+  ["threshold", "The vent", "Scene", 82, 64, 82, 54, "10", "Boss loads the appetite stimulant into a water gun."],
+  ["undertow", "The alley", "Motif", 56, 78, 58, 80, "02", "The human world and raccoon world run beside each other."],
+  ["beacon", "The raid", "Location", 90, 22, 90, 22, "10", "The raid begins under the clinic."]
 ];
 
 function buildDynamicGraph() {
@@ -73,13 +74,13 @@ function buildDynamicGraph() {
 }
 
 const nodeNotes = {
-  mira: "Mira maps what exists. Iris maps what might. They share six scenes, but only disagree in one.",
-  iris: "Iris appears whenever Mira avoids a choice. Four of those appearances happen at the Glass Shore.",
-  shore: "The Glass Shore holds three scenes and both characters. It is where the mirror motif first becomes part of the plot.",
-  mirror: "The mirror starts as an image, becomes a choice in Scene 06, and returns as proof in the ending.",
-  turn: "This is the only scene where Mira and Iris disagree. Changing it will affect the Reveal and Return quests.",
-  city: "The City Below appears twice. Iris knows it before Mira does, which makes the Reveal feel earned.",
-  return: "The ending reconnects Mira, the city, and the mirror choice. The opening signal can return here as sound.",
+  mira: "Boss runs the dumpster senate. His job is to keep the colony fed, whatever it takes.",
+  iris: "Squeak is the rookie who brings the bad news and says the word nobody wants to hear.",
+  shore: "The dumpster is the story's main room: senate chamber, bunker, and home.",
+  mirror: "Joe's Diner is the clue that shows the food crisis is real.",
+  turn: "This is where Boss turns panic into a plan: Operation Midnight Snack.",
+  city: "The White House opening sells a political thriller before the camera reveals the raccoons.",
+  return: "The vent raid carries the story into the credits with the raccoons inside the walls.",
 };
 
 function positionGraph() {
@@ -96,10 +97,10 @@ function positionGraph() {
 
 function renderStoryTimeline() {
   storyTimeline.innerHTML = `
-    <div class="timeline-overview"><div><span>STORY ARC</span><strong>The Glass Ocean</strong></div><span>MAIN SPINE · 3 CHAPTERS · 8 SCENES</span></div>
-    <section class="timeline-chapter"><header><span class="timeline-kicker">CHAPTER 01</span><strong>The Signal</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("01", "The signal", "scene-01")}${timelineScene("02", "The map", "scene-02")}${timelineScene("03", "Glass Shore", "scene-03")}</div></div></section>
-    <section class="timeline-chapter"><header><span class="timeline-kicker">CHAPTER 02</span><strong>The Reflection</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("04", "Archive room", "scene-04")}${timelineScene("05", "Reflection", "scene-05")}${timelineScene("06", "The turn", "scene-06")}</div></div><div class="timeline-branch"><span class="timeline-branch-label">BRANCH · FOLLOW THE MAP</span><div class="timeline-scenes">${timelineScene("06B", "Iris knows", "iris")}</div></div></section>
-    <section class="timeline-chapter"><header><span class="timeline-kicker">CHAPTER 03</span><strong>The Return</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("07", "City Below", "scene-07")}${timelineScene("08", "Return", "scene-08")}</div></div></section>`;
+    <div class="timeline-overview"><div><span>STORY ARC</span><strong>Operation Midnight Snack</strong></div><span>MAIN SPINE · 3 ACTS · 11 SCENES</span></div>
+    <section class="timeline-chapter"><header><span class="timeline-kicker">ACT 01</span><strong>The Bait</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("01", "White House", "scene-01")}${timelineScene("02", "The bouncer", "scene-02")}${timelineScene("03", "Dumpster senate", "scene-03")}${timelineScene("04", "Empty diner", "scene-04")}</div></div></section>
+    <section class="timeline-chapter"><header><span class="timeline-kicker">ACT 02</span><strong>The Myth</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("05", "Ozempic", "scene-05")}${timelineScene("06", "Policy change", "scene-06")}</div></div><div class="timeline-branch"><span class="timeline-branch-label">BRANCH · CREATE CONTINUITY</span><div class="timeline-scenes">${timelineScene("V2", "Rectangular dumpster", "shore")}</div></div></section>
+    <section class="timeline-chapter"><header><span class="timeline-kicker">ACT 03</span><strong>The Raid</strong></header><div class="timeline-branch"><span class="timeline-branch-label">MAIN SPINE</span><div class="timeline-scenes">${timelineScene("07", "Suiting up", "scene-07")}${timelineScene("08", "The clinic", "scene-08")}${timelineScene("09", "Rooftop drop", "scene-07")}${timelineScene("10", "The vent", "threshold")}${timelineScene("11", "Credits", "return")}</div></div></section>`;
   storyTimeline.querySelectorAll(".timeline-scene").forEach((scene) => scene.addEventListener("click", () => selectNode(scene.dataset.node)));
 }
 
@@ -236,11 +237,12 @@ async function generateScene() {
     const response = await fetch("/api/pipeline", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ prompt: `${prompt} Preserve Mira, Iris, and the mirror motif.`, mode: liveMode ? "live" : "demo" }),
+      body: JSON.stringify({ prompt: `${prompt} Preserve Boss, Squeak, the dumpster senate, and the Operation Midnight Snack tone.`, mode: liveMode ? "live" : "demo" }),
     });
     const payload = await response.json();
     if (!response.ok || !payload.ok) throw new Error(payload.error || "The pipeline did not complete.");
     const result = payload.result;
+    stageVideo.style.display = "none";
     stage.style.backgroundImage = `url("${result.asset_url}")`;
     stage.style.backgroundSize = "cover";
     stage.style.backgroundPosition = "center";
